@@ -1,0 +1,25 @@
+{
+  "events": [
+    {
+      "label": "Active Voice Channels",
+      "value": 18,
+      "detail": "Voice activity is strong across politics, gaming, and community rooms.",
+      "status": "Live now",
+      "accent": "sky"
+    },
+    {
+      "label": "Ongoing Games",
+      "value": 9,
+      "detail": "Co-op matches and casual events are active right now.",
+      "status": "Ready to join",
+      "accent": "violet"
+    },
+    {
+      "label": "Live Political Debates",
+      "value": 4,
+      "detail": "Structured discussions are open and moderator-led.",
+      "status": "Open discussion",
+      "accent": "rose"
+    }
+  ]
+}

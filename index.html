@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Citizens Of Change — a Discord community for political discussion, study forums, and community events."
+    />
+    <title>Citizens Of Change</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-theme="dark">
+    <div class="page-bg" aria-hidden="true">
+      <div class="bg-blur blur-one"></div>
+      <div class="bg-blur blur-two"></div>
+      <div class="bg-grid"></div>
+    </div>
+
+    <header class="site-header" id="header">
+      <div class="brand-wrap">
+        <img class="brand-logo" src="assets/8a076ab28b0ff9a0e303cef771ac4510.webp" alt="Citizens Of Change logo" />
+        <span class="brand-name">Citizens Of Change</span>
+      </div>
+
+      <nav class="top-nav" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#featured">Featured</a>
+        <a href="#study">Study</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#events">Events</a>
+        <a href="#support">Support</a>
+      </nav>
+
+      <div class="header-tools">
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+          <span class="theme-toggle__icon" aria-hidden="true"></span>
+        </button>
+
+        <button id="menuToggle" class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <nav id="menuOverlay" class="menu-overlay" aria-label="Mobile navigation">
+      <div class="menu-panel">
+        <div class="menu-header">
+          <div class="panel-brand">
+            <img class="brand-logo small-logo" src="assets/8a076ab28b0ff9a0e303cef771ac4510.webp" alt="Citizens Of Change logo" />
+            <div>
+              <p class="panel-kicker">Community</p>
+              <h2>Citizens Of Change</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-links">
+          <a href="#about">About</a>
+          <a href="#featured">Featured</a>
+          <a href="#study">Study</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#events">Events</a>
+          <a href="#support">Support</a>
+        </div>
+
+        <div class="auth-card">
+          <div id="discordUserInfo" class="discord-user hidden">
+            <img id="discordAvatar" src="" alt="Discord profile" />
+            <div class="discord-user-text">
+              <strong id="discordUsername">Guest</strong>
+              <small id="discordUserId">No account linked</small>
+            </div>
+          </div>
+
+          <button id="discordLoginBtn" class="discord-button primary" type="button">Login with Discord</button>
+          <button id="discordSignoutBtn" class="discord-button secondary hidden" type="button">Sign out</button>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <section id="about" class="hero section-shell reveal">
+        <div class="hero-copy">
+          <div class="live-pill">
+            <span class="live-dot"></span>
+            <span>Live Member Count</span>
+            <strong id="memberCount">4644+</strong>
+          </div>
+
+          <h1>Citizens Of Change</h1>
+          <p class="subtext">
+            A modern Discord community for political discussion, study groups, collaborative action, and live events.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#events" class="primary-cta">Join the Server</a>
+            <a href="#support" class="secondary-cta">Support Guide</a>
+          </div>
+
+          <div class="hero-badges">
+            <span>Political Discussion</span>
+            <span>Study Rooms</span>
+            <span>Community Events</span>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Live community stats preview">
+          <div class="visual-card main-card glass-panel">
+            <div class="card-topline">
+              <span class="dot"></span>
+              <span>Live momentum</span>
+            </div>
+
+            <div class="analytics-grid">
+              <div class="metric-box">
+                <strong id="metricMembers">4.6K</strong>
+                <span>Members</span>
+              </div>
+              <div class="metric-box accent">
+                <strong>80%</strong>
+                <span>Activity</span>
+              </div>
+              <div class="metric-box wide">
+                <strong>1.6M</strong>
+                <span>Community reach</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="visual-card floating-card glass-panel">
+            <p>Current event</p>
+            <h3>Building Management Team</h3>
+            <div class="progress-row">
+              <span>85% complete</span>
+              <span>+50%</span>
+            </div>
+            <div class="progress-bar"><span></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="featured" class="section-shell reveal feature-showcase">
+        <div class="section-heading split-header">
+          <div>
+            <p class="eyebrow">Featured events</p>
+            <h2>Community moments</h2>
+          </div>
+          <span class="status-pill">Auto-updating</span>
+        </div>
+
+        <div class="featured-carousel">
+          <button class="featured-arrow prev" type="button" aria-label="Previous feature">←</button>
+
+          <div class="featured-viewport">
+            <div class="featured-track" id="featuredTrack">
+              <article class="featured-slide active">
+                <div class="featured-media feature-media-one">
+                  <span>Live event image</span>
+                </div>
+                <div class="featured-copy">
+                  <p class="eyebrow small-eyebrow">Featured</p>
+                  <h3>Community Power Night</h3>
+                  <p>
+                    A high-energy discussion and action night connecting members around strategy, community impact,
+                    and shared wins.
+                  </p>
+                  <div class="featured-actions">
+                    <a class="primary-cta" href="https://discord.com" target="_blank" rel="noreferrer">Join Discord</a>
+                    <button class="secondary-cta ghost-button" type="button">See schedule</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="featured-slide">
+                <div class="featured-media feature-media-two">
+                  <span>Study session</span>
+                </div>
+                <div class="featured-copy">
+                  <p class="eyebrow small-eyebrow">Featured</p>
+                  <h3>Pomodoro Focus Room</h3>
+                  <p>
+                    Join a timed study sprint with accountability, quiet focus, and structured breaks for deep work.
+                  </p>
+                  <div class="featured-actions">
+                    <a class="primary-cta" href="https://discord.com" target="_blank" rel="noreferrer">Join the room</a>
+                    <button class="secondary-cta ghost-button" type="button">View details</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="featured-slide">
+                <div class="featured-media feature-media-three">
+                  <span>Voice call</span>
+                </div>
+                <div class="featured-copy">
+                  <p class="eyebrow small-eyebrow">Featured</p>
+                  <h3>Lo-Fi Focus Hangout</h3>
+                  <p>
+                    A relaxed study and planning space with ambient music, teamwork energy, and casual discussion.
+                  </p>
+                  <div class="featured-actions">
+                    <a class="primary-cta" href="https://discord.com" target="_blank" rel="noreferrer">Open channel</a>
+                    <button class="secondary-cta ghost-button" type="button">See topics</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <button class="featured-arrow next" type="button" aria-label="Next feature">→</button>
+        </div>
+      </section>
+
+      <section id="study" class="section-shell reveal study-section">
+        <div class="section-heading">
+          <p class="eyebrow">Study channels</p>
+          <h2>Built for focus and accountability</h2>
+        </div>
+
+        <div class="study-grid">
+          <article class="study-card glass-panel">
+            <div class="study-image study-pomodoro">
+              <span>Pomodoro</span>
+            </div>
+            <div class="study-copy">
+              <span class="study-tag">25/5 sprints</span>
+              <h3>Pomodoro Study Rooms</h3>
+              <p>Track timed sessions, stay accountable with peers, and keep momentum steady during heavy study blocks.</p>
+            </div>
+          </article>
+
+          <article class="study-card glass-panel">
+            <div class="study-image study-lofi">
+              <span>Lo-fi</span>
+            </div>
+            <div class="study-copy">
+              <span class="study-tag">Ambient focus</span>
+              <h3>Lo-fi Music Sessions</h3>
+              <p>Low-distraction background sound with a calm community atmosphere for reading, writing, and planning.</p>
+            </div>
+          </article>
+
+          <article class="study-card glass-panel">
+            <div class="study-image study-group">
+              <span>Group study</span>
+            </div>
+            <div class="study-copy">
+              <span class="study-tag">Community check-ins</span>
+              <h3>Study Accountability Rooms</h3>
+              <p>Keep consistent with shared goals, progress check-ins, and group sessions built for daily discipline.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="gallery" class="section-shell reveal gallery-section">
+        <div class="section-heading gallery-header">
+          <div>
+            <p class="eyebrow">Our work</p>
+            <h2>Highlights from our community</h2>
+          </div>
+          <button class="view-more-btn" type="button">View more images</button>
+        </div>
+
+        <div class="gallery-shell glass-panel">
+          <button class="gallery-arrow" type="button" data-gallery-dir="-1" aria-label="Previous image">←</button>
+
+          <div class="gallery-stage">
+            <div class="gallery-track" id="galleryTrack">
+              <article class="gallery-slide active">
+                <div class="gallery-image gallery-image--one"><span>Community event</span></div>
+              </article>
+              <article class="gallery-slide">
+                <div class="gallery-image gallery-image--two"><span>Strategy session</span></div>
+              </article>
+              <article class="gallery-slide">
+                <div class="gallery-image gallery-image--three"><span>Gaming night</span></div>
+              </article>
+              <article class="gallery-slide">
+                <div class="gallery-image gallery-image--four"><span>Volunteer launch</span></div>
+              </article>
+            </div>
+          </div>
+
+          <button class="gallery-arrow" type="button" data-gallery-dir="1" aria-label="Next image">→</button>
+        </div>
+      </section>
+
+      <section id="events" class="section-shell reveal live-section">
+        <div class="section-heading split-header">
+          <div>
+            <p class="eyebrow">Live activity</p>
+            <h2>Events & activity</h2>
+          </div>
+          <span class="status-pill">Bot-driven updates</span>
+        </div>
+
+        <div class="event-grid">
+          <article class="event-card glass-panel">
+            <div class="small-label">Active Voice Channels</div>
+            <h3>18</h3>
+            <p>High-energy rooms active across strategy, news, and community-led discussion.</p>
+            <div class="meta-row"><span class="status">Live now</span><span>Voice</span></div>
+          </article>
+
+          <article class="event-card glass-panel">
+            <div class="small-label">Ongoing Games</div>
+            <h3>9</h3>
+            <p>Co-op matches, tournaments, and team modes currently open to join.</p>
+            <div class="meta-row"><span class="status">Ready to join</span><span>Gaming</span></div>
+          </article>
+
+          <article class="event-card glass-panel">
+            <div class="small-label">Live Political Debates</div>
+            <h3>4</h3>
+            <p>Structured discussion rooms are active and moderated by volunteers.</p>
+            <div class="meta-row"><span class="status">Open discussion</span><span>Debate</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="team" class="section-shell reveal team-section">
+        <div class="team-header">
+          <p class="eyebrow">Board members</p>
+          <h2>Our Team</h2>
+          <p>
+            A community-led team focused on moderation, planning, technology, and keeping every event and support process consistent.
+          </p>
+        </div>
+
+        <div class="team-grid">
+          <article class="member-card glass-panel">
+            <div class="member-avatar">A</div>
+            <div class="member-meta">
+              <h3>Abhinav</h3>
+              <span>Founder (Board Member)</span>
+            </div>
+          </article>
+
+          <article class="member-card glass-panel">
+            <div class="member-avatar">AS</div>
+            <div class="member-meta">
+              <h3>Arush Shukla (Aruxh)</h3>
+              <span>CO-Founder (Board Member)</span>
+            </div>
+          </article>
+
+          <article class="member-card glass-panel">
+            <div class="member-avatar">A</div>
+            <div class="member-meta">
+              <h3>Ayaan</h3>
+              <span>Management Head</span>
+            </div>
+          </article>
+
+          <article class="member-card glass-panel">
+            <div class="member-avatar">JD</div>
+            <div class="member-meta">
+              <h3>John Doe</h3>
+              <span>DevOps</span>
+            </div>
+          </article>
+
+          <article class="member-card glass-panel">
+            <div class="member-avatar">ME</div>
+            <div class="member-meta">
+              <h3>Martin Eden</h3>
+              <span>Software Engineer</span>
+            </div>
+          </article>
+
+          <article class="member-card glass-panel">
+            <div class="member-avatar">BK</div>
+            <div class="member-meta">
+              <h3>Boris Kitua</h3>
+              <span>UX Researcher</span>
+            </div>
+          </article>
+
+          <article class="member-card glass-panel">
+            <div class="member-avatar">AF</div>
+            <div class="member-meta">
+              <h3>Atticus Finch</h3>
+              <span>QA Engineer</span>
+            </div>
+          </article>
+
+          <article class="member-card glass-panel">
+            <div class="member-avatar">AK</div>
+            <div class="member-meta">
+              <h3>Alper Kamu</h3>
+              <span>System Admin</span>
+            </div>
+          </article>
+
+          <article class="member-card glass-panel">
+            <div class="member-avatar">RM</div>
+            <div class="member-meta">
+              <h3>Rodrigo Monchi</h3>
+              <span>Product Manager</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="support" class="section-shell reveal support-section">
+        <div class="section-heading centered">
+          <p class="eyebrow">Support</p>
+          <h2>How to open a support ticket</h2>
+        </div>
+
+        <div class="support-guide">
+          <article class="support-step glass-panel">
+            <div class="step-badge">01</div>
+            <h3>
+              Go to the
+              <a class="discord-channel-link" href="https://discord.com" target="_blank" rel="noreferrer">
+                <span class="discord-channel-hash">#</span>📩・members-support
+              </a>
+              channel
+            </h3>
+            <p>Open the support room and review the pinned guidelines before creating a request.</p>
+            <div class="support-visual support-channel">
+              <span>Support channel preview</span>
+            </div>
+          </article>
+
+          <article class="support-step glass-panel">
+            <div class="step-badge">02</div>
+            <h3>Click the Create Ticket button</h3>
+            <p>Use the ticket system so your issue stays organized and staff can respond quickly.</p>
+            <div class="support-visual support-ticket">
+              <span>Ticket form preview</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <button id="scrollTopBtn" class="scroll-top" type="button" aria-label="Scroll to top">↑</button>
+
+    <footer class="site-footer">
+      <div class="footer-wrap glass-panel">
+        <div class="footer-brand">
+          <img class="brand-logo footer-logo" src="assets/8a076ab28b0ff9a0e303cef771ac4510.webp" alt="Citizens Of Change logo" />
+          <div>
+            <p class="footer-kicker">Citizens Of Change</p>
+            <p class="footer-sub">Discord • Politics • Gaming</p>
+          </div>
+        </div>
+
+        <div class="social-links" aria-label="Social media links">
+          <a href="#" aria-label="Discord" class="social-link">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.34 4.93A18.82 18.82 0 0 0 16.97 4l-.2.4c1.06.31 2.02.74 2.9 1.29a14.9 14.9 0 0 0-11.4 0 13.5 13.5 0 0 0 2.9-1.29L7.03 4a18.82 18.82 0 0 0-3.37.93A19.14 19.14 0 0 0 2 16.62c2.02 1.54 3.96 2.45 5.82 3.06l.52-.8a11.1 11.1 0 0 1-1.86-1.02c.16-.11.3-.23.44-.35A12.5 12.5 0 0 0 12 18.3a12.5 12.5 0 0 0 4.98-1.39c.14.12.28.24.44.35-.56.41-1.19.77-1.86 1.02l.52.8c1.86-.61 3.8-1.52 5.82-3.06.16-5.77-.99-10.35-2.66-11.69ZM9.58 14.6c-.95 0-1.72-.87-1.72-1.94 0-1.07.77-1.94 1.72-1.94.96 0 1.73.87 1.73 1.94 0 1.07-.77 1.94-1.73 1.94Zm4.84 0c-.95 0-1.73-.87-1.73-1.94 0-1.07.78-1.94 1.73-1.94.96 0 1.73.87 1.73 1.94 0 1.07-.77 1.94-1.73 1.94Z"/></svg>
+          </a>
+          <a href="#" aria-label="X" class="social-link">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2h3.3l-7.24 8.27L22.5 22h-6.55l-5.12-7.12L4.7 22H1.4l7.74-8.84L1.5 2h6.72l4.63 6.44L18.9 2Zm-1.15 18h1.82L7.1 3.9H5.2L17.75 20Z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube" class="social-link">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3.1 3.1 0 0 0-2.2-2.2C19.4 3.5 12 3.5 12 3.5s-7.4 0-9.3.5A3.1 3.1 0 0 0 .5 6.2 32.1 32.1 0 0 0 0 12a32.1 32.1 0 0 0 .5 5.8 3.1 3.1 0 0 0 2.2 2.2c1.9.5 9.3.5 9.3.5s7.4 0 9.3-.5a3.1 3.1 0 0 0 2.2-2.2A32.1 32.1 0 0 0 24 12a32.1 32.1 0 0 0-.5-5.8ZM9.75 15.5v-7l6.25 3.5-6.25 3.5Z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram" class="social-link">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5Zm5.25-2.75a1.25 1.25 0 1 1-1.25 1.25 1.25 1.25 0 0 1 1.25-1.25Z"/></svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

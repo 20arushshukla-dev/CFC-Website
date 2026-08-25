@@ -17,6 +17,14 @@ const featuredTrack = document.getElementById('featuredTrack');
 const featuredSlides = [...document.querySelectorAll('.featured-slide')];
 const featuredPrev = document.querySelector('.featured-arrow.prev');
 const featuredNext = document.querySelector('.featured-arrow.next');
+const introOverlay = document.getElementById('introOverlay');
+const introCta = document.querySelector('.intro-cta');
+const modal = document.getElementById('detailModal');
+const modalContent = modal.querySelector('.modal-content');
+const modalClose = document.querySelector('.modal-close');
+const infoCards = document.querySelectorAll('.info-card');
+const infoTip = document.getElementById('infoTip');
+const tipClose = document.querySelector('.tip-close');
 
 const DISCORD_STORAGE_KEY = 'cfc_discord_user';
 const DISCORD_CLIENT_ID = 'YOUR_DISCORD_CLIENT_ID';
@@ -112,6 +120,7 @@ let galleryIndex = 0;
 const galleryLen = gallerySlides.length;
 
 const updateGallery = (index) => {
+  if (!galleryTrack || !gallerySlides.length) return;
   galleryIndex = (index + galleryLen) % galleryLen;
   galleryTrack.style.transform = `translateX(-${galleryIndex * 100}%)`;
   gallerySlides.forEach((slide, i) => {
@@ -126,29 +135,119 @@ galleryButtons.forEach((button) => {
   });
 });
 
-setInterval(() => {
-  updateGallery(galleryIndex + 1);
-}, 4200);
+if (galleryTrack && gallerySlides.length > 1) {
+  setInterval(() => {
+    updateGallery(galleryIndex + 1);
+  }, 4200);
+}
 
 let featuredIndex = 0;
 const featuredLen = featuredSlides.length;
 
 const updateFeatured = (index) => {
+  if (!featuredTrack || !featuredSlides.length) return;
   featuredIndex = (index + featuredLen) % featuredLen;
   featuredTrack.style.transform = `translateX(-${featuredIndex * 100}%)`;
 };
 
-featuredPrev.addEventListener('click', () => {
-  updateFeatured(featuredIndex - 1);
+if (featuredPrev) {
+  featuredPrev.addEventListener('click', () => {
+    updateFeatured(featuredIndex - 1);
+  });
+}
+
+if (featuredNext) {
+  featuredNext.addEventListener('click', () => {
+    updateFeatured(featuredIndex + 1);
+  });
+}
+
+if (featuredTrack && featuredSlides.length > 1) {
+  setInterval(() => {
+    updateFeatured(featuredIndex + 1);
+  }, 5000);
+}
+
+const openModal = (card) => {
+  const title = card.dataset.title || card.dataset.name || 'Community update';
+  const description = card.dataset.description || 'More details coming soon.';
+  const action = card.dataset.action || 'Learn more';
+  const role = card.dataset.role || '';
+  const badge = card.dataset.type ? card.dataset.type.charAt(0).toUpperCase() + card.dataset.type.slice(1) : 'Details';
+  const discord = card.dataset.discord || 'https://discord.com';
+  const instagram = card.dataset.instagram || 'https://instagram.com';
+  const email = card.dataset.email || 'mailto:hello@citizensofchange.in';
+
+  modalContent.innerHTML = `
+    <span class="modal-badge">${badge}</span>
+    <h3 id="modalTitle">${title}</h3>
+    ${role ? `<p><strong>${role}</strong></p>` : ''}
+    <p>${description}</p>
+    <div class="modal-socials">
+      <a href="${discord}" target="_blank" rel="noreferrer" aria-label="Discord">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.34 4.93A18.82 18.82 0 0 0 16.97 4l-.2.4c1.06.31 2.02.74 2.9 1.29a14.9 14.9 0 0 0-11.4 0 13.5 13.5 0 0 0 2.9-1.29L7.03 4a18.82 18.82 0 0 0-3.37.93A19.14 19.14 0 0 0 2 16.62c2.02 1.54 3.96 2.45 5.82 3.06l.52-.8a11.1 11.1 0 0 1-1.86-1.02c.16-.11.3-.23.44-.35A12.5 12.5 0 0 0 12 18.3a12.5 12.5 0 0 0 4.98-1.39c.14.12.28.24.44.35-.56.41-1.19.77-1.86 1.02l.52.8c1.86-.61 3.8-1.52 5.82-3.06.16-5.77-.99-10.35-2.66-11.69ZM9.58 14.6c-.95 0-1.72-.87-1.72-1.94 0-1.07.77-1.94 1.72-1.94.96 0 1.73.87 1.73 1.94 0 1.07-.77 1.94-1.73 1.94Zm4.84 0c-.95 0-1.73-.87-1.73-1.94 0-1.07.78-1.94 1.73-1.94.96 0 1.73.87 1.73 1.94 0 1.07-.77 1.94-1.73 1.94Z"/></svg>
+      </a>
+      <a href="${instagram}" target="_blank" rel="noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5Zm5.25-2.75a1.25 1.25 0 1 1-1.25 1.25 1.25 1.25 0 0 1 1.25-1.25Z"/></svg>
+      </a>
+      <a href="${email}" aria-label="Email">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5v-11Zm2.1-.5 6.9 5.4 7-5.4H5.1Zm14.4 2.1-7.5 5.9a1 1 0 0 1-1.2 0L4.5 8.1v9.4c0 .3.2.5.5.5h13c.3 0 .5-.2.5-.5V8.1Z"/></svg>
+      </a>
+    </div>
+    <a href="${discord}" class="modal-cta" target="_blank" rel="noreferrer">${action}</a>
+  `;
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+};
+
+const closeModal = () => {
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+};
+
+infoCards.forEach((card) => {
+  card.addEventListener('click', () => openModal(card));
 });
 
-featuredNext.addEventListener('click', () => {
-  updateFeatured(featuredIndex + 1);
+modalClose.addEventListener('click', closeModal);
+modal.addEventListener('click', (event) => {
+  if (event.target.dataset.closeModal === 'true' || event.target === modal) {
+    closeModal();
+  }
 });
 
-setInterval(() => {
-  updateFeatured(featuredIndex + 1);
-}, 5000);
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && modal.classList.contains('open')) {
+    closeModal();
+  }
+});
+
+if (introOverlay && introCta) {
+  const hideIntro = () => {
+    introOverlay.classList.add('is-hidden');
+    document.body.classList.add('intro-complete');
+  };
+
+  introCta.addEventListener('click', hideIntro);
+}
+
+if (infoTip && tipClose) {
+  const showInfoTip = () => {
+    infoTip.classList.remove('hidden');
+    window.clearTimeout(showInfoTip.timer);
+    showInfoTip.timer = window.setTimeout(() => {
+      infoTip.classList.add('hidden');
+    }, 3000);
+  };
+
+  tipClose.addEventListener('click', () => {
+    infoTip.classList.add('hidden');
+    window.clearTimeout(showInfoTip.timer);
+  });
+
+  showInfoTip();
+}
 
 const getDiscordAuthUrl = () => {
   if (!DISCORD_CLIENT_ID || DISCORD_CLIENT_ID === 'YOUR_DISCORD_CLIENT_ID') {

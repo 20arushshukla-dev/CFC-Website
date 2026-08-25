@@ -105,13 +105,25 @@ const applyTheme = (theme) => {
   document.body.dataset.theme = theme;
   themeToggleIcon.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
   themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-  localStorage.setItem('cfc-theme', theme);
 };
 
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+const systemTheme = () => (prefersDark.matches ? 'dark' : 'light');
+
+const syncSystemTheme = () => {
+  if (!localStorage.getItem('cfc-theme')) {
+    applyTheme(systemTheme());
+  }
+};
+
 const savedTheme = localStorage.getItem('cfc-theme');
-const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+const initialTheme = savedTheme || systemTheme();
 applyTheme(initialTheme);
+if (prefersDark.addEventListener) {
+  prefersDark.addEventListener('change', syncSystemTheme);
+} else if (prefersDark.addListener) {
+  prefersDark.addListener(syncSystemTheme);
+}
 
 const hideIntro = () => {
   introOverlay.classList.add('is-hidden');

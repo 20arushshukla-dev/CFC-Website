@@ -23,6 +23,19 @@
       <div class="bg-grid"></div>
     </div>
 
+    <div id="introOverlay" class="intro-overlay" aria-live="polite">
+      <div class="intro-panels" aria-hidden="true"></div>
+      <div class="intro-content">
+        <img class="intro-logo" src="assets/8a076ab28b0ff9a0e303cef771ac4510.webp" alt="Citizens Of Change logo" />
+        <div class="intro-copy">
+          <span class="intro-kicker">Welcome to</span>
+          <h2 class="intro-title">Citizens Of Change</h2>
+          <p class="intro-subtitle">Built around action, community, and honest conversations.</p>
+        </div>
+        <button class="intro-cta" type="button">Enter the community</button>
+      </div>
+    </div>
+
     <header class="site-header" id="header">
       <div class="brand-wrap">
         <img class="brand-logo" src="assets/8a076ab28b0ff9a0e303cef771ac4510.webp" alt="Citizens Of Change logo" />
@@ -87,6 +100,11 @@
       </div>
     </nav>
 
+    <div id="infoTip" class="info-tip hidden" role="status" aria-live="polite">
+      <span>Tip: all cards are clickable.</span>
+      <button type="button" class="tip-close" aria-label="Close tip">×</button>
+    </div>
+
     <main>
       <section id="about" class="hero section-shell reveal">
         <div class="hero-copy">
@@ -96,7 +114,7 @@
             <strong id="memberCount">4644+</strong>
           </div>
 
-          <h1>Citizens Of Change</h1>
+          <h1 class="hero-typewriter" data-text="Citizens Of Change">Citizens Of Change</h1>
           <p class="subtext">
             A modern Discord community for political discussion, study groups, collaborative action, and live events.
           </p>
@@ -114,7 +132,7 @@
         </div>
 
         <div class="hero-visual" aria-label="Live community stats preview">
-          <div class="visual-card main-card glass-panel">
+          <div class="visual-card main-card glass-panel info-card" data-type="info" data-title="Live community snapshot" data-description="The community is active across discussion, study rooms, and event planning. Members stay engaged through daily conversations and routine check-ins." data-action="Open overview">
             <div class="card-topline">
               <span class="dot"></span>
               <span>Live momentum</span>
@@ -136,7 +154,7 @@
             </div>
           </div>
 
-          <div class="visual-card floating-card glass-panel">
+          <div class="visual-card floating-card glass-panel info-card" data-type="event" data-title="Community Power Night" data-description="A live discussion and collaboration night focused on planning, awareness, and stronger community action." data-action="View event">
             <p>Current event</p>
             <h3>Building Management Team</h3>
             <div class="progress-row">
@@ -162,7 +180,7 @@
 
           <div class="featured-viewport">
             <div class="featured-track" id="featuredTrack">
-              <article class="featured-slide active">
+              <article class="featured-slide active info-card" data-type="feature" data-title="Community Power Night" data-description="An evening of action planning, strategy, and member engagement designed to kick off major initiatives with energy and clarity." data-action="Join session">
                 <div class="featured-media feature-media-one">
                   <span>Live event image</span>
                 </div>
@@ -180,7 +198,7 @@
                 </div>
               </article>
 
-              <article class="featured-slide">
+              <article class="featured-slide info-card" data-type="feature" data-title="Pomodoro Focus Room" data-description="Join a timed study sprint with accountability, quiet focus, and structured breaks for deep work." data-action="Join room">
                 <div class="featured-media feature-media-two">
                   <span>Study session</span>
                 </div>
@@ -197,7 +215,7 @@
                 </div>
               </article>
 
-              <article class="featured-slide">
+              <article class="featured-slide info-card" data-type="feature" data-title="Lo-Fi Focus Hangout" data-description="A relaxed study and planning space with ambient music, patience, and collaborative energy for steady progress." data-action="Open channel">
                 <div class="featured-media feature-media-three">
                   <span>Voice call</span>
                 </div>
@@ -227,7 +245,7 @@
         </div>
 
         <div class="study-grid">
-          <article class="study-card glass-panel">
+          <article class="study-card glass-panel info-card" data-type="study" data-title="Pomodoro Study Rooms" data-description="Track timed sessions, stay accountable with peers, and keep momentum steady during heavy study blocks with structure and clarity." data-action="Open room">
             <div class="study-image study-pomodoro">
               <span>Pomodoro</span>
             </div>
@@ -238,7 +256,7 @@
             </div>
           </article>
 
-          <article class="study-card glass-panel">
+          <article class="study-card glass-panel info-card" data-type="study" data-title="Lo-fi Music Sessions" data-description="Low-distraction background sound with a calm community atmosphere for reading, writing, and planning deeply without pressure." data-action="Enter session">
             <div class="study-image study-lofi">
               <span>Lo-fi</span>
             </div>
@@ -249,7 +267,7 @@
             </div>
           </article>
 
-          <article class="study-card glass-panel">
+          <article class="study-card glass-panel info-card" data-type="study" data-title="Study Accountability Rooms" data-description="Keep consistent with shared goals, progress check-ins, and group sessions built for daily discipline and community support." data-action="Check in">
             <div class="study-image study-group">
               <span>Group study</span>
             </div>
@@ -305,21 +323,21 @@
         </div>
 
         <div class="event-grid">
-          <article class="event-card glass-panel">
+          <article class="event-card glass-panel info-card" data-type="event" data-title="Voice channels live" data-description="Current community voice rooms are active across discussions, debates, and shared planning across the server." data-action="See rooms">
             <div class="small-label">Active Voice Channels</div>
             <h3>18</h3>
             <p>High-energy rooms active across strategy, news, and community-led discussion.</p>
             <div class="meta-row"><span class="status">Live now</span><span>Voice</span></div>
           </article>
 
-          <article class="event-card glass-panel">
+          <article class="event-card glass-panel info-card" data-type="event" data-title="Ongoing games" data-description="Several co-op sessions and tournaments are open right now for players who want to join quickly and meet the community live." data-action="Join game">
             <div class="small-label">Ongoing Games</div>
             <h3>9</h3>
             <p>Co-op matches, tournaments, and team modes currently open to join.</p>
             <div class="meta-row"><span class="status">Ready to join</span><span>Gaming</span></div>
           </article>
 
-          <article class="event-card glass-panel">
+          <article class="event-card glass-panel info-card" data-type="event" data-title="Political debates" data-description="Members are actively discussing current issues in moderated rooms designed for respectful conversation and organized dialogue." data-action="Open debate">
             <div class="small-label">Live Political Debates</div>
             <h3>4</h3>
             <p>Structured discussion rooms are active and moderated by volunteers.</p>
@@ -338,7 +356,7 @@
         </div>
 
         <div class="team-grid">
-          <article class="member-card glass-panel">
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Abhinav" data-role="Founder • Board Member" data-bio="Leads strategic direction and community alignment while keeping day-to-day operations centered on member wellbeing and trust." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="abhinav@citizensofchange.in">
             <div class="member-avatar">A</div>
             <div class="member-meta">
               <h3>Abhinav</h3>
@@ -346,7 +364,7 @@
             </div>
           </article>
 
-          <article class="member-card glass-panel">
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Arush Shukla" data-role="Co-Founder • Board Member" data-bio="Helps guide the community roadmap, growth strategy, and team structure while coordinating key community initiatives." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="arush@citizensofchange.in">
             <div class="member-avatar">AS</div>
             <div class="member-meta">
               <h3>Arush Shukla (Aruxh)</h3>
@@ -354,7 +372,7 @@
             </div>
           </article>
 
-          <article class="member-card glass-panel">
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Ayaan" data-role="Management Head" data-bio="Oversees internal coordination, event communication flow, and smooth operational planning across the community teams." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="ayaan@citizensofchange.in">
             <div class="member-avatar">A</div>
             <div class="member-meta">
               <h3>Ayaan</h3>
@@ -362,50 +380,50 @@
             </div>
           </article>
 
-          <article class="member-card glass-panel">
+          <article class="member-card glass-panel info-card" data-type="member" data-name="John Doe" data-role="DevOps" data-bio="Maintains tools, uptime, and infrastructure for event delivery, escalations, and team operations." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="john@citizensofchange.in">
             <div class="member-avatar">JD</div>
             <div class="member-meta">
-              <h3>John Doe</h3>
+              <h3>SOON</h3>
               <span>DevOps</span>
             </div>
           </article>
 
-          <article class="member-card glass-panel">
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Martin Eden" data-role="Software Engineer" data-bio="Builds and improves the systems that make community experiences responsive, scalable, and smoother for everyone." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="martin@citizensofchange.in">
             <div class="member-avatar">ME</div>
             <div class="member-meta">
-              <h3>Martin Eden</h3>
+              <h3>SOON</h3>
               <span>Software Engineer</span>
             </div>
           </article>
 
-          <article class="member-card glass-panel">
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Boris Kitua" data-role="UX Researcher" data-bio="Studies member needs and experiences to improve interface clarity, accessibility, and product direction." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="boris@citizensofchange.in">
             <div class="member-avatar">BK</div>
             <div class="member-meta">
-              <h3>Boris Kitua</h3>
+              <h3>SOON</h3>
               <span>UX Researcher</span>
             </div>
           </article>
 
-          <article class="member-card glass-panel">
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Atticus Finch" data-role="QA Engineer" data-bio="Ensures the live experience stays polished, reliable, and consistent across community touchpoints and updates." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="atticus@citizensofchange.in">
             <div class="member-avatar">AF</div>
             <div class="member-meta">
-              <h3>Atticus Finch</h3>
+              <h3>SOON</h3>
               <span>QA Engineer</span>
             </div>
           </article>
 
-          <article class="member-card glass-panel">
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Alper Kamu" data-role="System Admin" data-bio="Keeps communication channels stable, secure, and operational while supporting high-trust access and management." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="alper@citizensofchange.in">
             <div class="member-avatar">AK</div>
             <div class="member-meta">
-              <h3>Alper Kamu</h3>
+              <h3>SOON</h3>
               <span>System Admin</span>
             </div>
           </article>
 
-          <article class="member-card glass-panel">
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Rodrigo Monchi" data-role="Product Manager" data-bio="Coordinates feature priorities, experiments, and community feedback loops so the experience keeps evolving with member needs." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="rodrigo@citizensofchange.in">
             <div class="member-avatar">RM</div>
             <div class="member-meta">
-              <h3>Rodrigo Monchi</h3>
+              <h3>SOON</h3>
               <span>Product Manager</span>
             </div>
           </article>
@@ -447,6 +465,14 @@
     </main>
 
     <button id="scrollTopBtn" class="scroll-top" type="button" aria-label="Scroll to top">↑</button>
+
+    <div id="detailModal" class="detail-modal" aria-hidden="true">
+      <div class="detail-modal-backdrop" data-close-modal="true"></div>
+      <div class="detail-modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal-close" type="button" aria-label="Close dialog">×</button>
+        <div class="modal-content"></div>
+      </div>
+    </div>
 
     <footer class="site-footer">
       <div class="footer-wrap glass-panel">

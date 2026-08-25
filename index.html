@@ -14,6 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/svg+xml" href="assets/8a076ab28b0ff9a0e303cef771ac4510.webp" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body data-theme="dark">
@@ -32,6 +33,7 @@
           <h2 class="intro-title">Citizens Of Change</h2>
           <p class="intro-subtitle">Built around action, community, and honest conversations.</p>
         </div>
+
         <button class="intro-cta" type="button">Enter the community</button>
       </div>
     </div>
@@ -176,9 +178,7 @@
         </div>
 
         <div class="featured-carousel">
-          <button class="featured-arrow prev" type="button" aria-label="Previous feature">←</button>
-
-          <div class="featured-viewport">
+          <div class="featured-viewport" id="featuredViewport">
             <div class="featured-track" id="featuredTrack">
               <article class="featured-slide active info-card" data-type="feature" data-title="Community Power Night" data-description="An evening of action planning, strategy, and member engagement designed to kick off major initiatives with energy and clarity." data-action="Join session">
                 <div class="featured-media feature-media-one">
@@ -234,7 +234,13 @@
             </div>
           </div>
 
-          <button class="featured-arrow next" type="button" aria-label="Next feature">→</button>
+          <div class="carousel-meta">
+            <div class="swipe-hint" aria-hidden="true">
+              <span class="swipe-hint__dot"></span>
+              <span>Swipe</span>
+            </div>
+            <div class="carousel-dots featured-dots" aria-label="Featured carousel pagination"></div>
+          </div>
         </div>
       </section>
 
@@ -290,9 +296,7 @@
         </div>
 
         <div class="gallery-shell glass-panel">
-          <button class="gallery-arrow" type="button" data-gallery-dir="-1" aria-label="Previous image">←</button>
-
-          <div class="gallery-stage">
+          <div class="gallery-stage" id="galleryViewport">
             <div class="gallery-track" id="galleryTrack">
               <article class="gallery-slide active">
                 <div class="gallery-image gallery-image--one"><span>Community event</span></div>
@@ -309,7 +313,13 @@
             </div>
           </div>
 
-          <button class="gallery-arrow" type="button" data-gallery-dir="1" aria-label="Next image">→</button>
+          <div class="carousel-meta gallery-meta">
+            <div class="swipe-hint" aria-hidden="true">
+              <span class="swipe-hint__dot"></span>
+              <span>Swipe</span>
+            </div>
+            <div class="carousel-dots gallery-dots" aria-label="Gallery carousel pagination"></div>
+          </div>
         </div>
       </section>
 
@@ -464,7 +474,7 @@
       </section>
     </main>
 
-    <button id="scrollTopBtn" class="scroll-top" type="button" aria-label="Scroll to top">↑</button>
+    <button id="scrollTopBtn" class="scroll-top hidden" type="button" aria-label="Scroll to top">↑</button>
 
     <div id="detailModal" class="detail-modal" aria-hidden="true">
       <div class="detail-modal-backdrop" data-close-modal="true"></div>

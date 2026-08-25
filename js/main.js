@@ -8,17 +8,19 @@ const discordAvatar = document.getElementById('discordAvatar');
 const discordUsername = document.getElementById('discordUsername');
 const discordUserId = document.getElementById('discordUserId');
 const scrollTopBtn = document.getElementById('scrollTopBtn');
+scrollTopBtn.classList.add('hidden');
+scrollTopBtn.classList.remove('visible');
 const themeToggle = document.getElementById('themeToggle');
 const themeToggleIcon = themeToggle.querySelector('.theme-toggle__icon');
 const galleryTrack = document.getElementById('galleryTrack');
+const galleryViewport = document.getElementById('galleryViewport');
 const gallerySlides = [...document.querySelectorAll('.gallery-slide')];
-const galleryButtons = [...document.querySelectorAll('[data-gallery-dir]')];
 const featuredTrack = document.getElementById('featuredTrack');
+const featuredViewport = document.getElementById('featuredViewport');
 const featuredSlides = [...document.querySelectorAll('.featured-slide')];
-const featuredPrev = document.querySelector('.featured-arrow.prev');
-const featuredNext = document.querySelector('.featured-arrow.next');
+const galleryDots = document.querySelector('.gallery-dots');
+const featuredDots = document.querySelector('.featured-dots');
 const introOverlay = document.getElementById('introOverlay');
-const introCta = document.querySelector('.intro-cta');
 const modal = document.getElementById('detailModal');
 const modalContent = modal.querySelector('.modal-content');
 const modalClose = document.querySelector('.modal-close');
@@ -51,21 +53,33 @@ document.querySelectorAll('.menu-links a').forEach((link) => {
 });
 
 let lastScrollTop = 0;
-window.addEventListener('scroll', () => {
+const updateScrollState = () => {
   const current = window.scrollY || 0;
-  if (current > lastScrollTop && current > 80) {
-    header.classList.add('is-hidden');
-  } else {
-    header.classList.remove('is-hidden');
-  }
+  const bodyReady = document.body.classList.contains('intro-complete');
+  const atTop = current <= 12;
+  const scrollingDown = current > lastScrollTop + 8;
 
-  if (current > 280) {
+  header.classList.toggle('is-hidden', bodyReady && !atTop && scrollingDown);
+
+  if (!bodyReady || atTop) {
+    scrollTopBtn.classList.add('hidden');
+    scrollTopBtn.classList.remove('visible');
+  } else if (current > 280) {
+    scrollTopBtn.classList.remove('hidden');
     scrollTopBtn.classList.add('visible');
   } else {
+    scrollTopBtn.classList.add('hidden');
     scrollTopBtn.classList.remove('visible');
   }
 
   lastScrollTop = current;
+};
+
+window.addEventListener('scroll', updateScrollState);
+window.addEventListener('load', () => {
+  scrollTopBtn.classList.add('hidden');
+  scrollTopBtn.classList.remove('visible');
+  updateScrollState();
 });
 
 scrollTopBtn.addEventListener('click', () => {
@@ -74,14 +88,16 @@ scrollTopBtn.addEventListener('click', () => {
 
 const sunIcon = `
   <svg viewBox="0 0 24 24" aria-hidden="true">
-    <circle cx="12" cy="12" r="4"></circle>
-    <path d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77"></path>
+    <circle cx="12" cy="12" r="3.8"></circle>
+    <g stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M12 1.8v2.2M12 20v2.2M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M1.8 12h2.2M20 12h2.2M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/>
+    </g>
   </svg>
 `;
 
 const moonIcon = `
   <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M20 15.5A7.5 7.5 0 0 1 8.5 4a7.5 7.5 0 1 0 11.5 11.5Z"></path>
+    <path d="M18.8 15.2A7.2 7.2 0 0 1 8.8 5.2a7.8 7.8 0 1 0 10 10Z" fill="currentColor" stroke="currentColor" stroke-width="0.8" stroke-linejoin="round"></path>
   </svg>
 `;
 
@@ -94,7 +110,59 @@ const applyTheme = (theme) => {
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const savedTheme = localStorage.getItem('cfc-theme');
-applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+applyTheme(initialTheme);
+
+const hideIntro = () => {
+  introOverlay.classList.add('is-hidden');
+  document.body.classList.add('intro-complete');
+  scrollTopBtn.classList.add('hidden');
+  scrollTopBtn.classList.remove('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateScrollState();
+
+  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+
+  if (isMobile) {
+    animateNumber({
+      element: document.getElementById('memberCount'),
+      start: 4000,
+      end: 4644,
+      duration: 1500,
+      format: (value) => `${value.toLocaleString('en-US')}+`,
+    });
+  } else {
+    animateMetricValue('#metricMembers', 4600, (value) => `${(value / 1000).toFixed(1)}K`);
+    animateMetricValue('.metric-box.accent strong', 80, (value) => `${value}%`);
+    animateMetricValue('.metric-box.wide strong', 1600, (value) => `${value.toLocaleString('en-US')}K`);
+
+    const progressLabels = document.querySelectorAll('.floating-card .progress-row span');
+    if (progressLabels.length) {
+      animateNumber({
+        element: progressLabels[0],
+        start: 0,
+        end: 85,
+        duration: 1500,
+        format: (value) => `${value}% complete`,
+      });
+
+      animateNumber({
+        element: progressLabels[1],
+        start: 0,
+        end: 50,
+        duration: 1500,
+        format: (value) => `+${value}%`,
+      });
+    }
+
+    animateProgressBar('.floating-card .progress-bar span', '85%');
+  }
+};
+
+const introCta = document.querySelector('.intro-cta');
+if (introCta) {
+  introCta.addEventListener('click', hideIntro);
+}
 
 themeToggle.addEventListener('click', () => {
   const nextTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -116,6 +184,30 @@ const observer = new IntersectionObserver(
 
 revealEls.forEach((el) => observer.observe(el));
 
+const createDots = (container, total, onSelect) => {
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  for (let i = 0; i < total; i += 1) {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'carousel-dot';
+    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    dot.addEventListener('click', () => onSelect(i));
+    container.appendChild(dot);
+  }
+};
+
+const updateDotState = (container, total, activeIndex) => {
+  if (!container) return;
+
+  const dots = [...container.querySelectorAll('.carousel-dot')];
+  dots.forEach((dot, index) => {
+    dot.classList.toggle('is-active', index === activeIndex);
+  });
+};
+
 let galleryIndex = 0;
 const galleryLen = gallerySlides.length;
 
@@ -126,16 +218,52 @@ const updateGallery = (index) => {
   gallerySlides.forEach((slide, i) => {
     slide.classList.toggle('active', i === galleryIndex);
   });
+  updateDotState(galleryDots, galleryLen, galleryIndex);
 };
 
-galleryButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    const dir = Number(button.dataset.galleryDir || 1);
-    updateGallery(galleryIndex + dir);
-  });
-});
-
 if (galleryTrack && gallerySlides.length > 1) {
+  createDots(galleryDots, galleryLen, (newIndex) => updateGallery(newIndex));
+  updateDotState(galleryDots, galleryLen, galleryIndex);
+
+  let galleryStartX = 0;
+  let galleryDeltaX = 0;
+  let galleryDragging = false;
+
+  const applyGalleryDrag = (delta) => {
+    galleryTrack.style.transition = 'none';
+    galleryTrack.style.transform = `translateX(${(-galleryIndex * 100) + (delta / (galleryViewport?.clientWidth || 1)) * 100}%)`;
+  };
+
+  galleryViewport?.addEventListener('pointerdown', (event) => {
+    galleryStartX = event.clientX;
+    galleryDeltaX = 0;
+    galleryDragging = true;
+    galleryTrack.style.transition = 'none';
+  });
+
+  galleryViewport?.addEventListener('pointermove', (event) => {
+    if (!galleryDragging) return;
+    galleryDeltaX = event.clientX - galleryStartX;
+    applyGalleryDrag(galleryDeltaX);
+  });
+
+  const finishGalleryDrag = () => {
+    if (!galleryDragging) return;
+    galleryDragging = false;
+    galleryTrack.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+
+    const threshold = (galleryViewport?.clientWidth || 1) * 0.14;
+    if (Math.abs(galleryDeltaX) > threshold) {
+      updateGallery(galleryDeltaX < 0 ? galleryIndex + 1 : galleryIndex - 1);
+    } else {
+      updateGallery(galleryIndex);
+    }
+  };
+
+  galleryViewport?.addEventListener('pointerup', finishGalleryDrag);
+  galleryViewport?.addEventListener('pointerleave', finishGalleryDrag);
+  galleryViewport?.addEventListener('pointercancel', finishGalleryDrag);
+
   setInterval(() => {
     updateGallery(galleryIndex + 1);
   }, 4200);
@@ -148,21 +276,52 @@ const updateFeatured = (index) => {
   if (!featuredTrack || !featuredSlides.length) return;
   featuredIndex = (index + featuredLen) % featuredLen;
   featuredTrack.style.transform = `translateX(-${featuredIndex * 100}%)`;
+  updateDotState(featuredDots, featuredLen, featuredIndex);
 };
 
-if (featuredPrev) {
-  featuredPrev.addEventListener('click', () => {
-    updateFeatured(featuredIndex - 1);
-  });
-}
-
-if (featuredNext) {
-  featuredNext.addEventListener('click', () => {
-    updateFeatured(featuredIndex + 1);
-  });
-}
-
 if (featuredTrack && featuredSlides.length > 1) {
+  createDots(featuredDots, featuredLen, (newIndex) => updateFeatured(newIndex));
+  updateDotState(featuredDots, featuredLen, featuredIndex);
+
+  let featuredStartX = 0;
+  let featuredDeltaX = 0;
+  let featuredDragging = false;
+
+  const applyFeaturedDrag = (delta) => {
+    featuredTrack.style.transition = 'none';
+    featuredTrack.style.transform = `translateX(${(-featuredIndex * 100) + (delta / (featuredViewport?.clientWidth || 1)) * 100}%)`;
+  };
+
+  featuredViewport?.addEventListener('pointerdown', (event) => {
+    featuredStartX = event.clientX;
+    featuredDeltaX = 0;
+    featuredDragging = true;
+    featuredTrack.style.transition = 'none';
+  });
+
+  featuredViewport?.addEventListener('pointermove', (event) => {
+    if (!featuredDragging) return;
+    featuredDeltaX = event.clientX - featuredStartX;
+    applyFeaturedDrag(featuredDeltaX);
+  });
+
+  const finishFeaturedDrag = () => {
+    if (!featuredDragging) return;
+    featuredDragging = false;
+    featuredTrack.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+
+    const threshold = (featuredViewport?.clientWidth || 1) * 0.14;
+    if (Math.abs(featuredDeltaX) > threshold) {
+      updateFeatured(featuredDeltaX < 0 ? featuredIndex + 1 : featuredIndex - 1);
+    } else {
+      updateFeatured(featuredIndex);
+    }
+  };
+
+  featuredViewport?.addEventListener('pointerup', finishFeaturedDrag);
+  featuredViewport?.addEventListener('pointerleave', finishFeaturedDrag);
+  featuredViewport?.addEventListener('pointercancel', finishFeaturedDrag);
+
   setInterval(() => {
     updateFeatured(featuredIndex + 1);
   }, 5000);
@@ -223,14 +382,48 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-if (introOverlay && introCta) {
-  const hideIntro = () => {
-    introOverlay.classList.add('is-hidden');
-    document.body.classList.add('intro-complete');
+const animateNumber = ({ element, start, end, duration = 1400, format }) => {
+  if (!element) return;
+
+  const startAt = performance.now();
+
+  const step = (now) => {
+    const progress = Math.min((now - startAt) / duration, 1);
+    const eased = 1 - (1 - progress) ** 3;
+    const current = Math.round(start + (end - start) * eased);
+    element.textContent = format(current);
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
   };
 
-  introCta.addEventListener('click', hideIntro);
-}
+  requestAnimationFrame(step);
+};
+
+const animateProgressBar = (selector, targetWidth = '85%') => {
+  const progressBar = document.querySelector(selector);
+  if (!progressBar) return;
+
+  progressBar.style.transition = 'width 1.4s cubic-bezier(0.22, 1, 0.36, 1)';
+  progressBar.style.width = '0%';
+  requestAnimationFrame(() => {
+    progressBar.style.width = targetWidth;
+  });
+};
+
+const animateMetricValue = (selector, endValue, format) => {
+  const target = document.querySelector(selector);
+  if (!target) return;
+
+  animateNumber({
+    element: target,
+    start: 0,
+    end: endValue,
+    format,
+  });
+};
+
 
 if (infoTip && tipClose) {
   const showInfoTip = () => {

@@ -192,6 +192,7 @@ const loadSiteData = async () => {
     const serverStats = payload.serverStats || {};
     const voiceChannels = Number.isFinite(Number(serverStats.voiceChannels)) ? Number(serverStats.voiceChannels) : 0;
     const chatChannels = Number.isFinite(Number(serverStats.chatChannels)) ? Number(serverStats.chatChannels) : 0;
+    const onlineMemberCount = Math.max(Number(serverStats.onlineMembers) || 0, 0);
     const activeMemberCount = [serverStats.onlineMembers, serverStats.idleMembers, serverStats.dndMembers]
       .map(Number)
       .filter(Number.isFinite)
@@ -201,10 +202,11 @@ const loadSiteData = async () => {
     if (Number.isInteger(activeMemberCount) && activeMemberCount >= 0) activeMembers.textContent = activeMemberCount.toLocaleString('en-US');
     const activeVoiceMembers = Number(serverStats.activeVoiceMembers) || 0;
     const recentChatMessages = Number(serverStats.recentChatMessages) || 0;
-    const presenceRate = activeMemberCount / Math.max(count, 1);
-    const voiceRate = activeVoiceMembers / Math.max(count, 1);
-    const chatRate = Math.min(1, recentChatMessages / 50);
-    const activity = Math.min(100, Math.round(presenceRate * 30 + voiceRate * 30 + chatRate * 40));
+    const voiceRate = Math.min(1, activeVoiceMembers / Math.max(onlineMemberCount, 1));
+    const chatRate = Math.min(1, recentChatMessages / Math.max(onlineMemberCount * 2, 1));
+    const activity = onlineMemberCount > 0
+      ? Math.round((voiceRate * 50 + chatRate * 50) * 100)
+      : 0;
     metricActivity.textContent = `${activity}%`;
 
     const currentEvent = payload.currentEvent;
@@ -295,7 +297,6 @@ const hideIntro = () => {
 
   if (!isMobile) {
     animateMetricValue('#metricMembers', 4600, (value) => `${(value / 1000).toFixed(1)}K`);
-    animateMetricValue('.metric-box.accent strong', 80, (value) => `${value}%`);
     animateMetricValue('.metric-box.wide strong', 1600, (value) => `${value.toLocaleString('en-US')}K`);
 
     const progressLabels = document.querySelectorAll('.floating-card .progress-row span');

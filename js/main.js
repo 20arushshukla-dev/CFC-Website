@@ -41,7 +41,6 @@ const latestUpdateAuthor = document.getElementById('latestUpdateAuthor');
 const latestUpdatePoster = document.getElementById('latestUpdatePoster');
 const latestUpdateDate = document.getElementById('latestUpdateDate');
 const latestUpdateTime = document.getElementById('latestUpdateTime');
-const metricActivity = document.getElementById('metricActivity');
 const totalVoiceChannels = document.getElementById('totalVoiceChannels');
 const totalChatChannels = document.getElementById('totalChatChannels');
 const activeMembers = document.getElementById('activeMembers');
@@ -200,15 +199,6 @@ const loadSiteData = async () => {
     if (Number.isInteger(voiceChannels) && voiceChannels >= 0) totalVoiceChannels.textContent = voiceChannels.toLocaleString('en-US');
     if (Number.isInteger(chatChannels) && chatChannels >= 0) totalChatChannels.textContent = chatChannels.toLocaleString('en-US');
     if (Number.isInteger(activeMemberCount) && activeMemberCount >= 0) activeMembers.textContent = activeMemberCount.toLocaleString('en-US');
-    const activeVoiceMembers = Number(serverStats.activeVoiceMembers) || 0;
-    const recentChatMessages = Number(serverStats.recentChatMessages) || 0;
-    const voiceRate = Math.min(1, activeVoiceMembers / Math.max(onlineMemberCount, 1));
-    const chatRate = Math.min(1, recentChatMessages / Math.max(onlineMemberCount * 2, 1));
-    const activity = onlineMemberCount > 0
-      ? Math.round((voiceRate * 50 + chatRate * 50) * 100)
-      : 0;
-    metricActivity.textContent = `${activity}%`;
-
     const currentEvent = payload.currentEvent;
     const progress = Number(currentEvent?.progress);
     if (currentEvent && currentEventTitle && Number.isInteger(progress) && progress >= 0 && progress <= 100) {

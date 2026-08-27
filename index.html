@@ -18,6 +18,14 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body data-theme="dark">
+<!-- Floating Clickable Tip -->
+<div id="clickable-tip" class="clickable-tip hidden">
+  <div class="tip-content">
+    <span class="tip-icon">💡</span>
+    <span class="tip-text">Tip: All cards are clickable!</span>
+    <button id="close-tip-btn" class="tip-close" aria-label="Close tip">&times;</button>
+  </div>
+</div>
     <div class="page-bg" aria-hidden="true">
       <div class="bg-blur blur-one"></div>
       <div class="bg-blur blur-two"></div>
@@ -34,7 +42,7 @@
           <p class="intro-subtitle">Built around action, community, and honest conversations.</p>
         </div>
 
-        <button class="intro-cta" type="button">Enter the community</button>
+        <button class="intro-cta" type="button" id="exploreCommunityBtn">Explore the community</button>
       </div>
     </div>
 
@@ -102,11 +110,6 @@
       </div>
     </nav>
 
-    <div id="infoTip" class="info-tip hidden" role="status" aria-live="polite">
-      <span>Tip: all cards are clickable.</span>
-      <button type="button" class="tip-close" aria-label="Close tip">×</button>
-    </div>
-
     <main>
       <section id="about" class="hero section-shell reveal">
         <div class="hero-copy">
@@ -146,7 +149,7 @@
                 <span>Members</span>
               </div>
               <div class="metric-box accent">
-                <strong>80%</strong>
+                <strong id="metricActivity">0%</strong>
                 <span>Activity</span>
               </div>
               <div class="metric-box wide">
@@ -156,16 +159,57 @@
             </div>
           </div>
 
-          <div class="visual-card floating-card glass-panel info-card" data-type="event" data-title="Community Power Night" data-description="A live discussion and collaboration night focused on planning, awareness, and stronger community action." data-action="View event">
+          <div id="currentEventCard" class="visual-card floating-card glass-panel info-card" data-type="event" data-title="Community Power Night" data-description="A live discussion and collaboration night focused on planning, awareness, and stronger community action." data-action="View event">
             <p>Current event</p>
-            <h3>Building Management Team</h3>
+            <h3 id="currentEventTitle">Building Management Team</h3>
             <div class="progress-row">
-              <span>85% complete</span>
-              <span>+50%</span>
+              <span id="currentEventProgress">85% complete</span>
             </div>
-            <div class="progress-bar"><span></span></div>
+            <div class="progress-bar"><span id="currentEventBar"></span></div>
           </div>
         </div>
+      </section>
+
+      <section id="events" class="section-shell reveal live-section">
+        <div class="section-heading split-header">
+          <div>
+            <p class="eyebrow">Live activity</p>
+            <h2>Events & activity</h2>
+          </div>
+          <span class="status-pill live-status-pill">Bot-driven updates</span>
+        </div>
+
+        <article id="latestUpdate" class="event-card glass-panel latest-update-card announcement-card hidden" aria-live="polite" role="button" tabindex="0" aria-label="Open latest Discord announcement">
+          <div class="announcement-poster-wrap"><img id="latestUpdatePoster" class="announcement-poster" alt="" /><span class="announcement-no-image">No Announcement</span></div>
+          <h3 id="latestUpdateTitle">No Announcement</h3>
+          <p id="latestUpdateBody"></p>
+          <div class="announcement-meta"><span id="latestUpdateDate">null</span><span id="latestUpdateTime">null</span></div>
+          <div class="meta-row"><span id="latestUpdateAuthor">null</span></div>
+        </article>
+
+        <div class="event-grid">
+          <article class="event-card glass-panel info-card" data-type="event" data-title="Voice channels live" data-description="Current community voice rooms are active across discussions, debates, and shared planning across the server." data-action="See rooms">
+            <div class="small-label">Total Voice Channels</div>
+            <h3 id="totalVoiceChannels">0</h3>
+            <p>High-energy rooms active across strategy, news, and community-led discussion.</p>
+            <div class="meta-row"><span class="status">Live now</span><span>Voice</span></div>
+          </article>
+
+          <article class="event-card glass-panel info-card" data-type="event" data-title="Ongoing games" data-description="Several co-op sessions and tournaments are open right now for players who want to join quickly and meet the community live." data-action="Join game">
+            <div class="small-label">Total Chat Channels</div>
+            <h3 id="totalChatChannels">0</h3>
+            <p>Co-op matches, tournaments, and team modes currently open to join.</p>
+            <div class="meta-row"><span class="status">Ready to join</span><span>Gaming</span></div>
+          </article>
+
+          <article class="event-card glass-panel info-card" data-type="event" data-title="Political debates" data-description="Members are actively discussing current issues in moderated rooms designed for respectful conversation and organized dialogue." data-action="Open debate">
+            <div class="small-label">Active Members</div>
+            <h3 id="activeMembers">0</h3>
+            <p>Structured discussion rooms are active and moderated by volunteers.</p>
+            <div class="meta-row"><span class="status">Open discussion</span><span>Debate</span></div>
+          </article>
+        </div>
+
       </section>
 
       <section id="featured" class="section-shell reveal feature-showcase">
@@ -323,39 +367,6 @@
         </div>
       </section>
 
-      <section id="events" class="section-shell reveal live-section">
-        <div class="section-heading split-header">
-          <div>
-            <p class="eyebrow">Live activity</p>
-            <h2>Events & activity</h2>
-          </div>
-          <span class="status-pill">Bot-driven updates</span>
-        </div>
-
-        <div class="event-grid">
-          <article class="event-card glass-panel info-card" data-type="event" data-title="Voice channels live" data-description="Current community voice rooms are active across discussions, debates, and shared planning across the server." data-action="See rooms">
-            <div class="small-label">Active Voice Channels</div>
-            <h3>18</h3>
-            <p>High-energy rooms active across strategy, news, and community-led discussion.</p>
-            <div class="meta-row"><span class="status">Live now</span><span>Voice</span></div>
-          </article>
-
-          <article class="event-card glass-panel info-card" data-type="event" data-title="Ongoing games" data-description="Several co-op sessions and tournaments are open right now for players who want to join quickly and meet the community live." data-action="Join game">
-            <div class="small-label">Ongoing Games</div>
-            <h3>9</h3>
-            <p>Co-op matches, tournaments, and team modes currently open to join.</p>
-            <div class="meta-row"><span class="status">Ready to join</span><span>Gaming</span></div>
-          </article>
-
-          <article class="event-card glass-panel info-card" data-type="event" data-title="Political debates" data-description="Members are actively discussing current issues in moderated rooms designed for respectful conversation and organized dialogue." data-action="Open debate">
-            <div class="small-label">Live Political Debates</div>
-            <h3>4</h3>
-            <p>Structured discussion rooms are active and moderated by volunteers.</p>
-            <div class="meta-row"><span class="status">Open discussion</span><span>Debate</span></div>
-          </article>
-        </div>
-      </section>
-
       <section id="team" class="section-shell reveal team-section">
         <div class="team-header">
           <p class="eyebrow">Board members</p>
@@ -366,75 +377,111 @@
         </div>
 
         <div class="team-grid">
-          <article class="member-card glass-panel info-card" data-type="member" data-name="Abhinav" data-role="Founder • Board Member" data-bio="Leads strategic direction and community alignment while keeping day-to-day operations centered on member wellbeing and trust." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="abhinav@citizensofchange.in">
-            <div class="member-avatar">A</div>
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Abhinav" data-role="Founder • Board Member" data-bio="Leads strategic direction and community alignment while keeping day-to-day operations centered on member wellbeing and trust." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="abhinav@citizensofchange.in" data-user-id="1541883107395899402">
+            <div class="member-avatar-wrap">
+              <div class="member-avatar">A</div>
+              <span class="discord-status-dot offline" aria-label="Offline"></span>
+            </div>
             <div class="member-meta">
               <h3>Abhinav</h3>
               <span>Founder (Board Member)</span>
+              <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
           </article>
 
-          <article class="member-card glass-panel info-card" data-type="member" data-name="Arush Shukla" data-role="Co-Founder • Board Member" data-bio="Helps guide the community roadmap, growth strategy, and team structure while coordinating key community initiatives." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="arush@citizensofchange.in">
-            <div class="member-avatar">AS</div>
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Arush Shukla" data-role="Co-Founder • Board Member" data-bio="Helps guide the community roadmap, growth strategy, and team structure while coordinating key community initiatives." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="arush@citizensofchange.in" data-user-id="767693440104136714">
+            <div class="member-avatar-wrap">
+              <div class="member-avatar">AS</div>
+              <span class="discord-status-dot offline" aria-label="Offline"></span>
+            </div>
             <div class="member-meta">
               <h3>Arush Shukla (Aruxh)</h3>
               <span>CO-Founder (Board Member)</span>
+              <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
           </article>
 
-          <article class="member-card glass-panel info-card" data-type="member" data-name="Ayaan" data-role="Management Head" data-bio="Oversees internal coordination, event communication flow, and smooth operational planning across the community teams." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="ayaan@citizensofchange.in">
-            <div class="member-avatar">A</div>
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Ayaan" data-role="Management Head" data-bio="Oversees internal coordination, event communication flow, and smooth operational planning across the community teams." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="ayaan@citizensofchange.in" data-user-id="1541883107395899402">
+            <div class="member-avatar-wrap">
+              <div class="member-avatar">A</div>
+              <span class="discord-status-dot offline" aria-label="Offline"></span>
+            </div>
             <div class="member-meta">
               <h3>Ayaan</h3>
               <span>Management Head</span>
+              <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
           </article>
 
-          <article class="member-card glass-panel info-card" data-type="member" data-name="John Doe" data-role="DevOps" data-bio="Maintains tools, uptime, and infrastructure for event delivery, escalations, and team operations." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="john@citizensofchange.in">
-            <div class="member-avatar">JD</div>
+          <article class="member-card glass-panel info-card" data-type="member" data-name="John Doe" data-role="DevOps" data-bio="Maintains tools, uptime, and infrastructure for event delivery, escalations, and team operations." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="john@citizensofchange.in" data-user-id="1541883107395899402">
+            <div class="member-avatar-wrap">
+              <div class="member-avatar">JD</div>
+              <span class="discord-status-dot offline" aria-label="Offline"></span>
+            </div>
             <div class="member-meta">
               <h3>SOON</h3>
               <span>DevOps</span>
+              <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
           </article>
 
-          <article class="member-card glass-panel info-card" data-type="member" data-name="Martin Eden" data-role="Software Engineer" data-bio="Builds and improves the systems that make community experiences responsive, scalable, and smoother for everyone." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="martin@citizensofchange.in">
-            <div class="member-avatar">ME</div>
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Martin Eden" data-role="Software Engineer" data-bio="Builds and improves the systems that make community experiences responsive, scalable, and smoother for everyone." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="martin@citizensofchange.in" data-user-id="1541883107395899402">
+            <div class="member-avatar-wrap">
+              <div class="member-avatar">ME</div>
+              <span class="discord-status-dot offline" aria-label="Offline"></span>
+            </div>
             <div class="member-meta">
               <h3>SOON</h3>
               <span>Software Engineer</span>
+              <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
           </article>
 
-          <article class="member-card glass-panel info-card" data-type="member" data-name="Boris Kitua" data-role="UX Researcher" data-bio="Studies member needs and experiences to improve interface clarity, accessibility, and product direction." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="boris@citizensofchange.in">
-            <div class="member-avatar">BK</div>
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Boris Kitua" data-role="UX Researcher" data-bio="Studies member needs and experiences to improve interface clarity, accessibility, and product direction." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="boris@citizensofchange.in" data-user-id="1541883107395899402">
+            <div class="member-avatar-wrap">
+              <div class="member-avatar">BK</div>
+              <span class="discord-status-dot offline" aria-label="Offline"></span>
+            </div>
             <div class="member-meta">
               <h3>SOON</h3>
               <span>UX Researcher</span>
+              <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
           </article>
 
-          <article class="member-card glass-panel info-card" data-type="member" data-name="Atticus Finch" data-role="QA Engineer" data-bio="Ensures the live experience stays polished, reliable, and consistent across community touchpoints and updates." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="atticus@citizensofchange.in">
-            <div class="member-avatar">AF</div>
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Atticus Finch" data-role="QA Engineer" data-bio="Ensures the live experience stays polished, reliable, and consistent across community touchpoints and updates." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="atticus@citizensofchange.in" data-user-id="1541883107395899402">
+            <div class="member-avatar-wrap">
+              <div class="member-avatar">AF</div>
+              <span class="discord-status-dot offline" aria-label="Offline"></span>
+            </div>
             <div class="member-meta">
               <h3>SOON</h3>
               <span>QA Engineer</span>
+              <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
           </article>
 
-          <article class="member-card glass-panel info-card" data-type="member" data-name="Alper Kamu" data-role="System Admin" data-bio="Keeps communication channels stable, secure, and operational while supporting high-trust access and management." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="alper@citizensofchange.in">
-            <div class="member-avatar">AK</div>
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Alper Kamu" data-role="System Admin" data-bio="Keeps communication channels stable, secure, and operational while supporting high-trust access and management." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="alper@citizensofchange.in" data-user-id="1541883107395899402">
+            <div class="member-avatar-wrap">
+              <div class="member-avatar">AK</div>
+              <span class="discord-status-dot offline" aria-label="Offline"></span>
+            </div>
             <div class="member-meta">
               <h3>SOON</h3>
               <span>System Admin</span>
+              <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
           </article>
 
-          <article class="member-card glass-panel info-card" data-type="member" data-name="Rodrigo Monchi" data-role="Product Manager" data-bio="Coordinates feature priorities, experiments, and community feedback loops so the experience keeps evolving with member needs." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="rodrigo@citizensofchange.in">
-            <div class="member-avatar">RM</div>
+          <article class="member-card glass-panel info-card" data-type="member" data-name="Rodrigo Monchi" data-role="Product Manager" data-bio="Coordinates feature priorities, experiments, and community feedback loops so the experience keeps evolving with member needs." data-discord="https://discord.com" data-instagram="https://instagram.com" data-email="rodrigo@citizensofchange.in" data-user-id="1541883107395899402">
+            <div class="member-avatar-wrap">
+              <div class="member-avatar">RM</div>
+              <span class="discord-status-dot offline" aria-label="Offline"></span>
+            </div>
             <div class="member-meta">
               <h3>SOON</h3>
               <span>Product Manager</span>
+              <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
           </article>
         </div>
@@ -511,6 +558,9 @@
       </div>
     </footer>
 
+    <script>
+      window.CFC_SITE_DATA_URL = 'http://localhost:3001/api/site-data';
+    </script>
     <script src="js/main.js"></script>
   </body>
 </html>

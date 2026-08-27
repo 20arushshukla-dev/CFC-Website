@@ -27,6 +27,33 @@ const modalClose = document.querySelector('.modal-close');
 const infoCards = document.querySelectorAll('.info-card');
 const infoTip = document.getElementById('infoTip');
 const tipClose = document.querySelector('.tip-close');
+const siteDataUrl = window.CFC_SITE_DATA_URL || '/api/site-data';
+const memberStatusMap = {
+  online: { label: 'Online', className: 'online' },
+  idle: { label: 'Idle', className: 'idle' },
+  dnd: { label: 'Do Not Disturb', className: 'dnd' },
+  offline: { label: 'Offline', className: 'offline' }
+};
+const latestUpdate = document.getElementById('latestUpdate');
+const latestUpdateTitle = document.getElementById('latestUpdateTitle');
+const latestUpdateBody = document.getElementById('latestUpdateBody');
+const latestUpdateAuthor = document.getElementById('latestUpdateAuthor');
+const latestUpdatePoster = document.getElementById('latestUpdatePoster');
+const latestUpdateDate = document.getElementById('latestUpdateDate');
+const latestUpdateTime = document.getElementById('latestUpdateTime');
+const metricActivity = document.getElementById('metricActivity');
+const totalVoiceChannels = document.getElementById('totalVoiceChannels');
+const totalChatChannels = document.getElementById('totalChatChannels');
+const activeMembers = document.getElementById('activeMembers');
+let latestAnnouncement = null;
+const discordInviteUrl = window.CFC_DISCORD_INVITE_URL || 'https://discord.com';
+const currentEventTitle = document.getElementById('currentEventTitle');
+const currentEventProgress = document.getElementById('currentEventProgress');
+const currentEventBar = document.getElementById('currentEventBar');
+const currentEventCard = document.getElementById('currentEventCard');
+const clickableTip = document.getElementById('clickable-tip');
+const clickableTipClose = document.getElementById('close-tip-btn');
+let currentEventProgressValue = 85;
 
 const DISCORD_STORAGE_KEY = 'cfc_discord_user';
 const DISCORD_CLIENT_ID = 'YOUR_DISCORD_CLIENT_ID';
@@ -119,6 +146,121 @@ const syncSystemTheme = () => {
 const savedTheme = localStorage.getItem('cfc-theme');
 const initialTheme = savedTheme || systemTheme();
 applyTheme(initialTheme);
+
+const applyMemberPresenceToCard = (card, status) => {
+  const safeStatus = memberStatusMap[status] || memberStatusMap.offline;
+  const dot = card.querySelector('.discord-status-dot');
+  const label = card.querySelector('.member-status-text');
+  const statusDot = card.querySelector('.member-status-dot');
+
+  card.dataset.presence = safeStatus.className;
+  if (dot) {
+    dot.className = `discord-status-dot ${safeStatus.className}`;
+    dot.setAttribute('aria-label', safeStatus.label);
+  }
+  if (label) label.textContent = safeStatus.label;
+  if (statusDot) statusDot.className = `member-status-dot ${safeStatus.className}`;
+};
+
+const syncMemberPresence = (teamPresence = []) => {
+  if (!teamPresence.length) return;
+  const map = new Map(teamPresence.map((member) => [String(member.userId), member]));
+
+  document.querySelectorAll('.member-card').forEach((card) => {
+    const userId = card.dataset.userId || '';
+    const member = map.get(String(userId));
+    const status = member?.status || 'offline';
+    applyMemberPresenceToCard(card, status);
+  });
+};
+
+const loadSiteData = async () => {
+  try {
+    const response = await fetch(siteDataUrl, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Site data request failed: ${response.status}`);
+    const payload = await response.json();
+    syncMemberPresence(payload.teamPresence || []);
+    const count = Number(payload.memberCount);
+
+    if (Number.isFinite(count) && count >= 0) {
+      document.getElementById('memberCount').textContent = `${count.toLocaleString('en-US')}+`;
+      document.getElementById('metricMembers').textContent = `${(count / 1000).toFixed(1)}K`;
+    }
+
+    const serverStats = payload.serverStats || {};
+    const voiceChannels = Number.isFinite(Number(serverStats.voiceChannels)) ? Number(serverStats.voiceChannels) : 0;
+    const chatChannels = Number.isFinite(Number(serverStats.chatChannels)) ? Number(serverStats.chatChannels) : 0;
+    const activeMemberCount = Number.isFinite(Number(serverStats.onlineMembers))
+      ? Number(serverStats.onlineMembers)
+      : 0;
+    if (Number.isInteger(voiceChannels) && voiceChannels >= 0) totalVoiceChannels.textContent = voiceChannels.toLocaleString('en-US');
+    if (Number.isInteger(chatChannels) && chatChannels >= 0) totalChatChannels.textContent = chatChannels.toLocaleString('en-US');
+    if (Number.isInteger(activeMemberCount) && activeMemberCount >= 0) activeMembers.textContent = activeMemberCount.toLocaleString('en-US');
+    const activity = activeMemberCount > 0
+      ? Math.min(100, Math.round((activeMemberCount / Math.max(count, 1)) * 70 + (voiceChannels / Math.max(voiceChannels + chatChannels, 1)) * 30))
+      : 0;
+    metricActivity.textContent = `${activity}%`;
+
+    const currentEvent = payload.currentEvent;
+    const progress = Number(currentEvent?.progress);
+    if (currentEvent && currentEventTitle && Number.isInteger(progress) && progress >= 0 && progress <= 100) {
+      currentEventProgressValue = progress;
+      currentEventTitle.textContent = currentEvent.title;
+      currentEventProgress.textContent = `${progress}% complete`;
+      currentEventBar.style.width = `${progress}%`;
+    } else if (currentEventTitle) {
+      currentEventProgressValue = 0;
+      currentEventTitle.textContent = 'No active event';
+      currentEventProgress.textContent = '0% complete';
+      currentEventBar.style.width = '0%';
+    }
+    currentEventCard?.classList.toggle('current-event-cleared', !currentEvent);
+
+    const update = payload.updates?.[0] || null;
+    if (update && latestUpdate) {
+      latestAnnouncement = update;
+      latestUpdateTitle.textContent = update.title;
+      latestUpdateBody.textContent = update.body;
+      latestUpdateAuthor.textContent = update.submittedBy || 'Discord bot';
+      latestUpdateDate.textContent = update.date || 'Date to be announced';
+      latestUpdateTime.textContent = update.time || 'Time to be announced';
+      if (update.poster) {
+        latestUpdatePoster.src = update.poster;
+        latestUpdatePoster.alt = `${update.title} poster`;
+        latestUpdatePoster.classList.add('has-image');
+      } else {
+        latestUpdatePoster.removeAttribute('src');
+        latestUpdatePoster.classList.remove('has-image');
+      }
+      latestUpdate.classList.remove('hidden');
+    } else if (latestUpdate) {
+      latestAnnouncement = null;
+      latestUpdateTitle.innerHTML = '<strong>No active events</strong>';
+      latestUpdateTitle.textContent = 'No Announcement';
+      latestUpdateBody.textContent = 'There are no active announcements right now.';
+      latestUpdateAuthor.textContent = payload.announcementClear?.clearedBy
+        ? `Cleared by ${payload.announcementClear.clearedBy}`
+        : 'null';
+      latestUpdateDate.textContent = 'null';
+      latestUpdateTime.textContent = 'null';
+      latestUpdatePoster.removeAttribute('src');
+      latestUpdatePoster.classList.remove('has-image');
+      latestUpdate.classList.remove('hidden');
+      latestUpdate.classList.add('announcement-cleared');
+    }
+    latestUpdate?.classList.toggle('announcement-cleared', !update);
+  } catch (error) {
+    console.error('Failed to fetch live site data:', error);
+  }
+};
+
+latestUpdatePoster?.addEventListener('error', () => {
+  latestUpdatePoster.removeAttribute('src');
+  latestUpdatePoster.classList.remove('has-image');
+});
+
+loadSiteData();
+window.setInterval(loadSiteData, 30000);
 if (prefersDark.addEventListener) {
   prefersDark.addEventListener('change', syncSystemTheme);
 } else if (prefersDark.addListener) {
@@ -132,6 +274,16 @@ const hideIntro = () => {
   scrollTopBtn.classList.remove('visible');
   window.scrollTo({ top: 0, behavior: 'smooth' });
   updateScrollState();
+
+  if (clickableTip) {
+    clickableTip.classList.remove('hidden');
+    requestAnimationFrame(() => clickableTip.classList.add('show'));
+    window.clearTimeout(hideIntro.tipTimer);
+    hideIntro.tipTimer = window.setTimeout(() => {
+      clickableTip.classList.remove('show');
+      window.setTimeout(() => clickableTip.classList.add('hidden'), 350);
+    }, 3000);
+  }
 
   const isMobile = window.matchMedia('(max-width: 640px)').matches;
 
@@ -153,7 +305,7 @@ const hideIntro = () => {
       animateNumber({
         element: progressLabels[0],
         start: 0,
-        end: 85,
+        end: currentEventProgressValue,
         duration: 1500,
         format: (value) => `${value}% complete`,
       });
@@ -167,7 +319,7 @@ const hideIntro = () => {
       });
     }
 
-    animateProgressBar('.floating-card .progress-bar span', '85%');
+    animateProgressBar('.floating-card .progress-bar span', `${currentEventProgressValue}%`);
   }
 };
 
@@ -339,6 +491,14 @@ if (featuredTrack && featuredSlides.length > 1) {
   }, 5000);
 }
 
+const getMemberPresence = (card) => {
+  const userId = card.dataset.userId || '';
+  const fallback = 'offline';
+  const presence = card.dataset.presence || fallback;
+  const status = memberStatusMap[presence] || memberStatusMap[fallback];
+  return { userId, status };
+};
+
 const openModal = (card) => {
   const title = card.dataset.title || card.dataset.name || 'Community update';
   const description = card.dataset.description || 'More details coming soon.';
@@ -348,11 +508,16 @@ const openModal = (card) => {
   const discord = card.dataset.discord || 'https://discord.com';
   const instagram = card.dataset.instagram || 'https://instagram.com';
   const email = card.dataset.email || 'mailto:hello@citizensofchange.in';
+  const { status } = getMemberPresence(card);
+  const statusMarkup = card.dataset.type === 'member'
+    ? `<div class="modal-member-status"><span class="member-status-dot ${status.className}"></span><span>${status.label}</span></div>`
+    : '';
 
   modalContent.innerHTML = `
     <span class="modal-badge">${badge}</span>
     <h3 id="modalTitle">${title}</h3>
     ${role ? `<p><strong>${role}</strong></p>` : ''}
+    ${statusMarkup}
     <p>${description}</p>
     <div class="modal-socials">
       <a href="${discord}" target="_blank" rel="noreferrer" aria-label="Discord">
@@ -377,8 +542,62 @@ const closeModal = () => {
   modal.setAttribute('aria-hidden', 'true');
 };
 
+const escapeHtml = (value) => String(value || '').replace(/[&<>'"]/g, (character) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+}[character]));
+
+const openAnnouncementMenu = () => {
+  if (!latestAnnouncement) return;
+
+  const poster = latestAnnouncement.poster
+    ? `<img class="announcement-modal-poster" src="${escapeHtml(latestAnnouncement.poster)}" alt="${escapeHtml(latestAnnouncement.title)} poster">`
+    : '<div class="announcement-modal-no-image">No image found</div>';
+
+  modalContent.innerHTML = `
+    <span class="modal-badge announcement-modal-badge"><span class="latest-update-dot"></span> Live announcement</span>
+    <h3 id="modalTitle">${escapeHtml(latestAnnouncement.title)}</h3>
+    <p>${escapeHtml(latestAnnouncement.body)}</p>
+    <div class="announcement-modal-details">
+      <strong>Date</strong><span>${escapeHtml(latestAnnouncement.date || 'To be announced')}</span>
+      <strong>Time</strong><span>${escapeHtml(latestAnnouncement.time || 'To be announced')}</span>
+    </div>
+    ${poster}
+    <a href="${escapeHtml(latestAnnouncement.inviteLink || discordInviteUrl)}" class="modal-cta announcement-join" target="_blank" rel="noreferrer">Join on Discord</a>
+  `;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+};
+
+const openImageLightbox = (imageUrl, title = 'Poster Preview') => {
+  if (!imageUrl) return;
+
+  modalContent.innerHTML = `
+    <div class="modal-image-container">
+      <img class="modal-image-lightbox" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}">
+    </div>
+  `;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+};
+
 infoCards.forEach((card) => {
   card.addEventListener('click', () => openModal(card));
+});
+
+const announcementPosterWrap = document.querySelector('.announcement-poster-wrap');
+announcementPosterWrap?.addEventListener('click', (event) => {
+  if (latestAnnouncement && latestAnnouncement.poster) {
+    event.stopPropagation();
+    openImageLightbox(latestAnnouncement.poster, latestAnnouncement.title);
+  }
+});
+
+latestUpdate?.addEventListener('click', openAnnouncementMenu);
+latestUpdate?.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    openAnnouncementMenu();
+  }
 });
 
 modalClose.addEventListener('click', closeModal);
@@ -436,23 +655,6 @@ const animateMetricValue = (selector, endValue, format) => {
   });
 };
 
-
-if (infoTip && tipClose) {
-  const showInfoTip = () => {
-    infoTip.classList.remove('hidden');
-    window.clearTimeout(showInfoTip.timer);
-    showInfoTip.timer = window.setTimeout(() => {
-      infoTip.classList.add('hidden');
-    }, 3000);
-  };
-
-  tipClose.addEventListener('click', () => {
-    infoTip.classList.add('hidden');
-    window.clearTimeout(showInfoTip.timer);
-  });
-
-  showInfoTip();
-}
 
 const getDiscordAuthUrl = () => {
   if (!DISCORD_CLIENT_ID || DISCORD_CLIENT_ID === 'YOUR_DISCORD_CLIENT_ID') {
@@ -562,3 +764,15 @@ discordLoginBtn.addEventListener('click', () => {
 discordSignoutBtn.addEventListener('click', clearDiscordUser);
 
 handleDiscordCallback();
+
+// Welcome Overlay stays until user clicks Explore the community button
+(function() {
+  const tip = document.getElementById('clickable-tip');
+  const btn = document.getElementById('close-tip-btn');
+
+  if (btn && tip) btn.addEventListener('click', () => {
+    tip.classList.remove('show');
+    window.clearTimeout(hideIntro.tipTimer);
+    window.setTimeout(() => tip.classList.add('hidden'), 350);
+  });
+})();

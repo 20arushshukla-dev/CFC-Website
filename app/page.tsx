@@ -17,6 +17,18 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+const DISCORD_API_URL = process.env.NEXT_PUBLIC_DISCORD_API || '/api/site-data';
+
+type SiteUpdate = {
+  id: string;
+  newEvent: string;
+  title: string;
+  body: string;
+  poster: string;
+  submittedBy: string;
+  submittedAt: string;
+};
+
 const DiscordIcon = ({ className = 'h-4 w-4' }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
     <path d="M20.34 4.93A18.82 18.82 0 0 0 16.97 4l-.2.4c1.06.31 2.02.74 2.9 1.29a14.9 14.9 0 0 0-11.4 0 13.5 13.5 0 0 0 2.9-1.29L7.03 4a18.82 18.82 0 0 0-3.37.93A19.14 19.14 0 0 0 2 16.62c2.02 1.54 3.96 2.45 5.82 3.06l.52-.8a11.1 11.1 0 0 1-1.86-1.02c.16-.11.3-.23.44-.35A12.5 12.5 0 0 0 12 18.3a12.5 12.5 0 0 0 4.98-1.39c.14.12.28.24.44.35-.56.41-1.19.77-1.86 1.02l.52.8c1.86-.61 3.8-1.52 5.82-3.06.16-5.77-.99-10.35-2.66-11.69ZM9.58 14.6c-.95 0-1.72-.87-1.72-1.94 0-1.07.77-1.94 1.72-1.94.96 0 1.73.87 1.73 1.94 0 1.07-.77 1.94-1.73 1.94Zm4.84 0c-.95 0-1.73-.87-1.73-1.94 0-1.07.78-1.94 1.73-1.94.96 0 1.73.87 1.73 1.94 0 1.07-.77 1.94-1.73 1.94Z"/>
@@ -108,6 +120,27 @@ function Header() {
 }
 
 function Hero() {
+  const [memberCount, setMemberCount] = useState(12480);
+
+  useEffect(() => {
+    const loadMemberCount = async () => {
+      try {
+        const response = await fetch(DISCORD_API_URL, { cache: 'no-store' });
+        const data = await response.json();
+
+        if (data?.memberCount) {
+          setMemberCount(data.memberCount);
+        }
+      } catch (error) {
+        console.error('Failed to fetch live member count:', error);
+      }
+    };
+
+    loadMemberCount();
+    const timer = setInterval(loadMemberCount, 30000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section id="about" className="relative mx-auto flex max-w-6xl flex-col items-center justify-center px-4 pb-12 pt-36 md:pt-40">
       <motion.div
@@ -118,7 +151,7 @@ function Hero() {
       >
         <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,1)]" />
         <span>Live Member Count</span>
-        <span className="font-semibold">12,480+</span>
+        <span className="font-semibold">{memberCount.toLocaleString()}+</span>
       </motion.div>
 
       <motion.div
@@ -182,15 +215,32 @@ function Hero() {
 
 function LiveSection() {
   const [data, setData] = useState<typeof liveData | null>(null);
+  const [latestUpdate, setLatestUpdate] = useState<SiteUpdate | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setData(liveData);
-      setLoading(false);
-    }, 1200);
+    const loadData = async () => {
+      try {
+        const response = await fetch(DISCORD_API_URL, { cache: 'no-store' });
+        const payload = await response.json();
 
-    return () => clearTimeout(timer);
+        setLatestUpdate(payload?.updates?.[0] || null);
+
+        setData({
+          activeVoiceChannels: payload?.updates?.length ? 18 : liveData.activeVoiceChannels,
+          ongoingGames: payload?.updates?.length ? 9 : liveData.ongoingGames,
+          livePoliticalDebates: payload?.updates?.length ? 4 : liveData.livePoliticalDebates,
+        });
+      } catch (error) {
+        setData(liveData);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+    const timer = setInterval(loadData, 30000);
+    return () => clearInterval(timer);
   }, []);
 
   return (
@@ -253,6 +303,32 @@ function LiveSection() {
           ))
         )}
       </div>
+
+      {latestUpdate && (
+        <div className="glass mt-5 rounded-3xl p-5">
+          <div className="flex flex-col gap-5">
+            <img
+              src={latestUpdate.poster}
+              alt={latestUpdate.title}
+              className="w-full cursor-pointer rounded-2xl object-cover transition hover:opacity-90"
+              style={{ minHeight: '280px' }}
+              onClick={() => {
+                const lightbox = document.createElement('div');
+                lightbox.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4';
+                lightbox.onclick = () => lightbox.remove();
+                lightbox.innerHTML = `<img src="${latestUpdate.poster}" class="max-w-full max-h-[90vh] object-contain rounded-lg" alt="${latestUpdate.title}">`;
+                document.body.appendChild(lightbox);
+              }}
+            />
+            <div>
+              <p className="text-xs uppercase tracking-[0.22em] text-emerald-200/80">Latest Discord update</p>
+              <h4 className="mt-2 text-2xl font-bold text-white">{latestUpdate.title}</h4>
+              <p className="mt-2 text-sm text-slate-200/70">{latestUpdate.body}</p>
+              <p className="mt-3 text-xs text-slate-300/50">By {latestUpdate.submittedBy}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

@@ -5,7 +5,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "bot:server": "npm --prefix \"Discord bot\" run server",
+    "bot": "npm --prefix \"Discord bot\" start",
+    "bot:register": "npm --prefix \"Discord bot\" run register"
   },
   "dependencies": {
     "framer-motion": "^11.3.19",

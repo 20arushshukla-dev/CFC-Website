@@ -46,6 +46,7 @@ const totalVoiceChannels = document.getElementById('totalVoiceChannels');
 const totalChatChannels = document.getElementById('totalChatChannels');
 const activeMembers = document.getElementById('activeMembers');
 let latestAnnouncement = null;
+let liveMemberCount = null;
 const discordInviteUrl = window.CFC_DISCORD_INVITE_URL || 'https://discord.com';
 const currentEventTitle = document.getElementById('currentEventTitle');
 const currentEventProgress = document.getElementById('currentEventProgress');
@@ -183,6 +184,7 @@ const loadSiteData = async () => {
     const count = Number(payload.memberCount);
 
     if (Number.isFinite(count) && count >= 0) {
+      liveMemberCount = count;
       document.getElementById('memberCount').textContent = `${count.toLocaleString('en-US')}+`;
       document.getElementById('metricMembers').textContent = `${(count / 1000).toFixed(1)}K`;
     }
@@ -190,15 +192,19 @@ const loadSiteData = async () => {
     const serverStats = payload.serverStats || {};
     const voiceChannels = Number.isFinite(Number(serverStats.voiceChannels)) ? Number(serverStats.voiceChannels) : 0;
     const chatChannels = Number.isFinite(Number(serverStats.chatChannels)) ? Number(serverStats.chatChannels) : 0;
-    const activeMemberCount = Number.isFinite(Number(serverStats.onlineMembers))
-      ? Number(serverStats.onlineMembers)
-      : 0;
+    const activeMemberCount = [serverStats.onlineMembers, serverStats.idleMembers, serverStats.dndMembers]
+      .map(Number)
+      .filter(Number.isFinite)
+      .reduce((total, value) => total + Math.max(value, 0), 0);
     if (Number.isInteger(voiceChannels) && voiceChannels >= 0) totalVoiceChannels.textContent = voiceChannels.toLocaleString('en-US');
     if (Number.isInteger(chatChannels) && chatChannels >= 0) totalChatChannels.textContent = chatChannels.toLocaleString('en-US');
     if (Number.isInteger(activeMemberCount) && activeMemberCount >= 0) activeMembers.textContent = activeMemberCount.toLocaleString('en-US');
-    const activity = activeMemberCount > 0
-      ? Math.min(100, Math.round((activeMemberCount / Math.max(count, 1)) * 70 + (voiceChannels / Math.max(voiceChannels + chatChannels, 1)) * 30))
-      : 0;
+    const activeVoiceMembers = Number(serverStats.activeVoiceMembers) || 0;
+    const recentChatMessages = Number(serverStats.recentChatMessages) || 0;
+    const presenceRate = activeMemberCount / Math.max(count, 1);
+    const voiceRate = activeVoiceMembers / Math.max(count, 1);
+    const chatRate = Math.min(1, recentChatMessages / 50);
+    const activity = Math.min(100, Math.round(presenceRate * 30 + voiceRate * 30 + chatRate * 40));
     metricActivity.textContent = `${activity}%`;
 
     const currentEvent = payload.currentEvent;
@@ -287,15 +293,7 @@ const hideIntro = () => {
 
   const isMobile = window.matchMedia('(max-width: 640px)').matches;
 
-  if (isMobile) {
-    animateNumber({
-      element: document.getElementById('memberCount'),
-      start: 4000,
-      end: 4644,
-      duration: 1500,
-      format: (value) => `${value.toLocaleString('en-US')}+`,
-    });
-  } else {
+  if (!isMobile) {
     animateMetricValue('#metricMembers', 4600, (value) => `${(value / 1000).toFixed(1)}K`);
     animateMetricValue('.metric-box.accent strong', 80, (value) => `${value}%`);
     animateMetricValue('.metric-box.wide strong', 1600, (value) => `${value.toLocaleString('en-US')}K`);
@@ -320,6 +318,10 @@ const hideIntro = () => {
     }
 
     animateProgressBar('.floating-card .progress-bar span', `${currentEventProgressValue}%`);
+  }
+
+  if (isMobile && liveMemberCount !== null) {
+    document.getElementById('memberCount').textContent = `${liveMemberCount.toLocaleString('en-US')}+`;
   }
 };
 

@@ -27,7 +27,11 @@ const modalClose = document.querySelector('.modal-close');
 const infoCards = document.querySelectorAll('.info-card');
 const infoTip = document.getElementById('infoTip');
 const tipClose = document.querySelector('.tip-close');
-const siteDataUrl = window.CFC_SITE_DATA_URL || '/api/site-data';
+const hostName = window.location.hostname;
+const defaultSiteDataUrl = hostName === 'localhost' || hostName === '127.0.0.1'
+  ? 'http://127.0.0.1:3001/api/site-data'
+  : 'https://cfc.wispbyte.app/api/site-data';
+const siteDataUrl = window.CFC_SITE_DATA_URL || defaultSiteDataUrl;
 const memberStatusMap = {
   online: { label: 'Online', className: 'online' },
   idle: { label: 'Idle', className: 'idle' },
@@ -164,11 +168,29 @@ const applyMemberPresenceToCard = (card, status) => {
 
 const syncMemberPresence = (teamPresence = []) => {
   if (!teamPresence.length) return;
-  const map = new Map(teamPresence.map((member) => [String(member.userId), member]));
+
+  const findMemberPresence = (card) => {
+    const userId = String(card.dataset.userId || '').trim();
+    const memberName = String(card.dataset.name || '').trim();
+
+    const exactMatch = teamPresence.find((member) => (
+      String(member.userId || '').trim() === userId && String(member.name || '').trim() === memberName
+    ));
+    if (exactMatch) return exactMatch;
+
+    const idMatches = teamPresence.filter((member) => String(member.userId || '').trim() === userId);
+    if (idMatches.length === 1) return idMatches[0];
+
+    if (memberName) {
+      const nameMatch = teamPresence.find((member) => String(member.name || '').trim() === memberName);
+      if (nameMatch) return nameMatch;
+    }
+
+    return null;
+  };
 
   document.querySelectorAll('.member-card').forEach((card) => {
-    const userId = card.dataset.userId || '';
-    const member = map.get(String(userId));
+    const member = findMemberPresence(card);
     const status = member?.status || 'offline';
     applyMemberPresenceToCard(card, status);
   });
@@ -266,10 +288,16 @@ if (prefersDark.addEventListener) {
 }
 
 const hideIntro = () => {
+  if (!introOverlay) return;
+
   introOverlay.classList.add('is-hidden');
+  introOverlay.setAttribute('aria-hidden', 'true');
   document.body.classList.add('intro-complete');
-  scrollTopBtn.classList.add('hidden');
-  scrollTopBtn.classList.remove('visible');
+
+  if (scrollTopBtn) {
+    scrollTopBtn.classList.add('hidden');
+    scrollTopBtn.classList.remove('visible');
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
   updateScrollState();
 
@@ -316,10 +344,23 @@ const hideIntro = () => {
   }
 };
 
-const introCta = document.querySelector('.intro-cta');
+const introCta = document.getElementById('exploreCommunityBtn') || document.querySelector('.intro-cta');
 if (introCta) {
-  introCta.addEventListener('click', hideIntro);
+  introCta.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    hideIntro();
+  });
 }
+
+if (introOverlay) {
+  introOverlay.addEventListener('click', (event) => {
+    if (event.target === introOverlay) {
+      hideIntro();
+    }
+  });
+}
+
 
 themeToggle.addEventListener('click', () => {
   const nextTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';

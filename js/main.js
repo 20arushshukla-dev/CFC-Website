@@ -318,8 +318,6 @@ const hideIntro = () => {
   const isMobile = window.matchMedia('(max-width: 640px)').matches;
 
   if (!isMobile) {
-    animateMetricValue('#metricMembers', 4600, (value) => `${(value / 1000).toFixed(1)}K`);
-    animateMetricValue('.metric-box.wide strong', 1600, (value) => `${value.toLocaleString('en-US')}K`);
 
     const progressLabels = document.querySelectorAll('.floating-card .progress-row span');
     if (progressLabels.length) {

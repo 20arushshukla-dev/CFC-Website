@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/svg+xml" href="assets/8a076ab28b0ff9a0e303cef771ac4510.webp" />
+    <link rel="icon" type="image/svg+xml" href="assets/cfc_server_logo.png" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body data-theme="dark">
@@ -39,7 +39,8 @@
         <div class="intro-copy">
           <span class="intro-kicker">Welcome to</span>
           <h2 class="intro-title">Citizens Of Change</h2>
-          <p class="intro-subtitle">Built around action, community, and honest conversations.</p>
+          <p class="intro-subtitle">United By Dialogue. Driven By Change.</p>
+          <p class="intro-description">Debates,political discussions, live protest updates, donations, gaming and more all in one server.</p>
         </div>
         <p class="intro-credit">Made with <span aria-label="love">&#10084;</span> by Arush Shukla</p>
 
@@ -111,6 +112,27 @@
       </div>
     </nav>
 
+    <div id="joinUsModal" class="social-modal hidden" aria-hidden="true">
+      <div class="social-modal__backdrop" data-close="true"></div>
+      <div class="social-modal__panel" role="dialog" aria-modal="true" aria-labelledby="joinUsTitle">
+        <button type="button" class="social-modal__close" id="closeJoinUsModal" aria-label="Close join us popup">&times;</button>
+        <p class="eyebrow">Follow us</p>
+        <h3 id="joinUsTitle">Join the movement</h3>
+
+        <div class="social-grid">
+          <a class="social-link instagram" href="https://www.instagram.com/cfcindiaofficial" target="_blank" rel="noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5Zm5.25-2.75a1.25 1.25 0 1 1-1.25 1.25 1.25 1.25 0 0 1 1.25-1.25Z"/></svg>
+          </a>
+          <a class="social-link youtube" href="https://www.youtube.com/@citizensofchange" target="_blank" rel="noreferrer" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 7.2a2.8 2.8 0 0 0-2-2c-1.8-.5-9-.5-9-.5s-7.2 0-9 .5a2.8 2.8 0 0 0-2 2A28.8 28.8 0 0 0 0 12a28.8 28.8 0 0 0 .6 4.8 2.8 2.8 0 0 0 2 2c1.8.5 9 .5 9 .5s7.2 0 9-.5a2.8 2.8 0 0 0 2-2A28.8 28.8 0 0 0 24 12a28.8 28.8 0 0 0-.6-4.8ZM9.5 15.5v-7l6 3.5-6 3.5Z"/></svg>
+          </a>
+          <a class="social-link x" href="https://x.com/cfcindiaofficial" target="_blank" rel="noreferrer" aria-label="X">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2h3.8l-8.3 9.5L23 22h-7.5l-5.9-8.6L3 22H-.8l8.9-10.2L1 2h7.7l5.3 7.8L18.9 2Zm-1.3 18h2.1L7.1 3.9H4.9L17.6 20Z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
     <main>
       <section id="about" class="hero section-shell reveal">
         <div class="hero-copy">
@@ -125,15 +147,23 @@
             A modern Discord community for political discussion, study groups, collaborative action, and live events.
           </p>
 
-          <div class="hero-actions">
-            <a href="#events" class="primary-cta">Join the Server</a>
-            <a href="#support" class="secondary-cta">Support Guide</a>
+          <div class="hero-actions social-actions">
+            <div class="join-us-dropdown">
+              <button type="button" class="primary-cta join-us-toggle" aria-expanded="false" aria-controls="joinUsSocialMenu">Join Us</button>
+              <div id="joinUsSocialMenu" class="join-us-menu hidden" aria-label="Social links menu">
+                <a class="social-cta discord" href="#" aria-label="Discord" data-name="Discord" data-link="#">Discord</a>
+                <a class="social-cta instagram" href="#" aria-label="Instagram" data-name="Instagram" data-link="#">Instagram</a>
+                <a class="social-cta x" href="#" aria-label="X" data-name="X" data-link="#">X (Twitter)</a>
+                <a class="social-cta reddit" href="#" aria-label="Reddit" data-name="Reddit" data-link="#">Reddit</a>
+              </div>
+            </div>
+            <a href="#support" class="secondary-cta support-guide-cta">Support Guide</a>
           </div>
 
           <div class="hero-badges">
-            <span>Political Discussion</span>
-            <span>Study Rooms</span>
-            <span>Community Events</span>
+            <a href="#latestupdate" class="hero-badge">Current Events</a>
+            <a href="#team" class="hero-badge">Our Team</a>
+            <a href="#gallery" class="hero-badge">Highlights</a>
           </div>
         </div>
 
@@ -150,12 +180,12 @@
                 <span>Members</span>
               </div>
               <div class="metric-box accent">
-                <strong id="metricActivity">0%</strong>
-                <span>Activity</span>
+                <strong id="metricActivity">24/7</strong>
+                <span>Support</span>
               </div>
               <div class="metric-box wide">
-                <strong>1.6M</strong>
-                <span>Community reach</span>
+                <strong>10k+</strong>
+                <span>Reach</span>
               </div>
             </div>
           </div>
@@ -192,22 +222,22 @@
           <article class="event-card glass-panel info-card" data-type="event" data-title="Voice channels live" data-description="Current community voice rooms are active across discussions, debates, and shared planning across the server." data-action="See rooms">
             <div class="small-label">Total Voice Channels</div>
             <h3 id="totalVoiceChannels">0</h3>
-            <p>High-energy rooms active across strategy, news, and community-led discussion.</p>
-            <div class="meta-row"><span class="status">Live now</span><span>Voice</span></div>
+            <p>High-energy rooms active across strategy, news, gaming, music and community-led discussion.</p>
+            <div class="meta-row"><span class="status">Active</span><span>Voice</span></div>
           </article>
 
           <article class="event-card glass-panel info-card" data-type="event" data-title="Ongoing games" data-description="Several co-op sessions and tournaments are open right now for players who want to join quickly and meet the community live." data-action="Join game">
             <div class="small-label">Total Chat Channels</div>
             <h3 id="totalChatChannels">0</h3>
-            <p>Co-op matches, tournaments, and team modes currently open to join.</p>
-            <div class="meta-row"><span class="status">Ready to join</span><span>Gaming</span></div>
+            <p>Organised Chat channels for latest news, chatting, announcements, gaming events etc</p>
+            <div class="meta-row"><span class="status">Texting....</span><span>Friendly Chats</span></div>
           </article>
 
           <article class="event-card glass-panel info-card" data-type="event" data-title="Political debates" data-description="Members are actively discussing current issues in moderated rooms designed for respectful conversation and organized dialogue." data-action="Open debate">
             <div class="small-label">Active Members</div>
             <h3 id="activeMembers">0</h3>
-            <p>Structured discussion rooms are active and moderated by volunteers.</p>
-            <div class="meta-row"><span class="status">Open discussion</span><span>Debate</span></div>
+            <p>Number of Online members in our server Debating, Gaming, Studying and helping us to cover Latest News</p>
+            <div class="meta-row"><span class="status">Loved Ones</span><span>Members</span></div>
           </article>
         </div>
 
@@ -222,57 +252,66 @@
           <span class="status-pill">Auto-updating</span>
         </div>
 
-        <div class="featured-carousel">
+        <div class="featured-carousel carousel-panel">
+          <div class="carousel-toolbar">
+            <button type="button" class="carousel-pause-btn" data-carousel="featured" aria-pressed="false">Pause</button>
+            <div class="carousel-arrows" aria-label="Featured carousel controls">
+              <button type="button" class="carousel-arrow carousel-prev" data-carousel="featured" data-direction="-1" aria-label="Previous slide">&#8249;</button>
+              <button type="button" class="carousel-arrow carousel-next" data-carousel="featured" data-direction="1" aria-label="Next slide">&#8250;</button>
+            </div>
+          </div>
+          <div class="carousel-timer" aria-hidden="true">
+            <span class="carousel-timer-fill" data-carousel="featured"></span>
+          </div>
           <div class="featured-viewport" id="featuredViewport">
             <div class="featured-track" id="featuredTrack">
-              <article class="featured-slide active info-card" data-type="feature" data-title="Community Power Night" data-description="An evening of action planning, strategy, and member engagement designed to kick off major initiatives with energy and clarity." data-action="Join session">
+              <article class="featured-slide active info-card" data-type="feature" data-discord="https://discord.gg/zUh56bfWGx"data-title="Moderation Team" data-description="We have a dedicated moderation team to ensure a safe and welcoming environment for all members. We are working to improve our community guidelines and enforce them consistently.">
                 <div class="featured-media feature-media-one">
-                  <img src="assets/images/community-power-night.webp" alt="Community Power Night" />
+                  <img src="assets/webimages/staff.png" alt="Community Power Night" />
                 </div>
                 <div class="featured-copy">
                   <p class="eyebrow small-eyebrow">Featured</p>
-                  <h3>Community Power Night</h3>
+                  <h3>Always Active Moderation Team</h3>
                   <p>
-                    A high-energy discussion and action night connecting members around strategy, community impact,
-                    and shared wins.
+                    Our high-energetic discussions and actions to make the community more active and friendly for members. Planning for new events, debates, gaming and more.
                   </p>
                   <div class="featured-actions">
-                    <a class="primary-cta" href="https://discord.com" target="_blank" rel="noreferrer">Join Discord</a>
-                    <button class="secondary-cta ghost-button" type="button">See schedule</button>
+                    <a class="primary-cta" href="https://discord.gg/zUh56bfWGx" target="_blank" rel="noreferrer">Join Discord</a>
+                   <button class="secondary-cta ghost-button" type="button">Learn More</button> 
                   </div>
                 </div>
               </article>
 
-              <article class="featured-slide info-card" data-type="feature" data-title="Pomodoro Focus Room" data-description="Join a timed study sprint with accountability, quiet focus, and structured breaks for deep work." data-action="Join room">
+              <article class="featured-slide info-card" data-type="feature" discord-data="https://discord.gg/zUh56bfWGx" data-title="Gaming Sessions" data-description="We organise gaming events on daily baisis and paid events on weekly basis. We have a dedicated gaming channel for all the members to join and play together." data-action="Join room">
                 <div class="featured-media feature-media-two">
-                  <img src="assets/images/pomodoro-focus-room.webp" alt="Pomodoro Focus Room" />
+                  <img src="assets/webimages/gaming.png" alt="Pomodoro Focus Room" />
                 </div>
                 <div class="featured-copy">
                   <p class="eyebrow small-eyebrow">Featured</p>
-                  <h3>Pomodoro Focus Room</h3>
+                  <h3>Gaming Sessions</h3>
                   <p>
-                    Join a timed study sprint with accountability, quiet focus, and structured breaks for deep work.
+                    Organising Paid BGMI/Free Fire paid scremes, free events, Minecraft server and much moree.
                   </p>
                   <div class="featured-actions">
-                    <a class="primary-cta" href="https://discord.com" target="_blank" rel="noreferrer">Join the room</a>
+                    <a class="primary-cta" href="https://discord.gg/zUh56bfWGx" target="_blank" rel="noreferrer">Join the room</a>
                     <button class="secondary-cta ghost-button" type="button">View details</button>
                   </div>
                 </div>
               </article>
 
-              <article class="featured-slide info-card" data-type="feature" data-title="Lo-Fi Focus Hangout" data-description="A relaxed study and planning space with ambient music, patience, and collaborative energy for steady progress." data-action="Open channel">
+              <article class="featured-slide info-card" data-type="feature" data-discord="https://discord.gg/zUh56bfWGx"data-title="Pomodoro Sessions" data-description="A relaxed study and planning space with ambient music, patience, and collaborative energy for steady progress." data-action="Open channel">
                 <div class="featured-media feature-media-three">
-                  <img src="assets/images/lofi-focus-hangout.webp" alt="Lo-Fi Focus Hangout" />
+                  <img src="assets/webimages/talent.png" alt="Gaming" />
                 </div>
                 <div class="featured-copy">
                   <p class="eyebrow small-eyebrow">Featured</p>
-                  <h3>Lo-Fi Focus Hangout</h3>
+                  <h3>Pomodoro Session</h3>
                   <p>
-                    A relaxed study and planning space with ambient music, teamwork energy, and casual discussion.
+                    Study With our Pomodoro session and stay focused with our community. We have a dedicated Pomodoro channel for all the members to join and study together.
                   </p>
                   <div class="featured-actions">
-                    <a class="primary-cta" href="https://discord.com" target="_blank" rel="noreferrer">Open channel</a>
-                    <button class="secondary-cta ghost-button" type="button">See topics</button>
+                    <a class="primary-cta" href="https://discord.gg/zUh56bfWGx" target="_blank" rel="noreferrer">Start Studying</a>
+                    <button class="secondary-cta ghost-button" type="button">Learn More</button>
                   </div>
                 </div>
               </article>
@@ -296,20 +335,20 @@
         </div>
 
         <div class="study-grid">
-          <article class="study-card glass-panel info-card" data-type="study" data-title="Pomodoro Study Rooms" data-description="Track timed sessions, stay accountable with peers, and keep momentum steady during heavy study blocks with structure and clarity." data-action="Open room">
+          <article class="study-card glass-panel info-card" data-discord="https://discord.gg/zUh56bfWGx"data-type="study" data-title="Pomodoro Study Rooms" data-description="Track timed sessions, stay accountable with peers, and keep momentum steady during heavy study blocks with structure and clarity." data-action="Open room">
             <div class="study-image study-pomodoro">
-              <img src="assets/images/pomodoro-study.webp" alt="Pomodoro study room" />
+              <img src="assets/webimages/pomodoro.png" alt="Pomodoro study room" />
             </div>
             <div class="study-copy">
-              <span class="study-tag">25/5 sprints</span>
+              <span class="study-tag">Pomodoro</span>
               <h3>Pomodoro Study Rooms</h3>
               <p>Track timed sessions, stay accountable with peers, and keep momentum steady during heavy study blocks.</p>
             </div>
           </article>
 
-          <article class="study-card glass-panel info-card" data-type="study" data-title="Lo-fi Music Sessions" data-description="Low-distraction background sound with a calm community atmosphere for reading, writing, and planning deeply without pressure." data-action="Enter session">
+          <article class="study-card glass-panel info-card" discord-data="https://discord.gg/zUh56bfWGx" data-type="study" data-title="Lo-fi Music Sessions" data-description="Low-distraction background sound with a calm community atmosphere for reading, writing, and planning deeply without pressure." data-action="Enter session">
             <div class="study-image study-lofi">
-              <img src="assets/images/lofi-music.webp" alt="Lo-fi music session" />
+              <img src="assets/webimages/lofi.png" alt="Lo-fi music session" />
             </div>
             <div class="study-copy">
               <span class="study-tag">Ambient focus</span>
@@ -318,12 +357,12 @@
             </div>
           </article>
 
-          <article class="study-card glass-panel info-card" data-type="study" data-title="Study Accountability Rooms" data-description="Keep consistent with shared goals, progress check-ins, and group sessions built for daily discipline and community support." data-action="Check in">
+          <article class="study-card glass-panel info-card" discord-data="https://discord.gg/zUh56bfWGx" data-type="study" data-title="Study Accountability Rooms" data-description="Keep consistent with shared goals, progress check-ins, and group sessions built for daily discipline and community support." data-action="Check in">
             <div class="study-image study-group">
-              <img src="assets/images/group-study.webp" alt="Group study room" />
+              <img src="assets/webimages/accountibility.png" alt="Group study room" />
             </div>
             <div class="study-copy">
-              <span class="study-tag">Community check-ins</span>
+              <span class="study-tag">Community checkins</span>
               <h3>Study Accountability Rooms</h3>
               <p>Keep consistent with shared goals, progress check-ins, and group sessions built for daily discipline.</p>
             </div>
@@ -337,14 +376,24 @@
             <p class="eyebrow">Our work</p>
             <h2>Highlights from our community</h2>
           </div>
-          <button class="view-more-btn" type="button">View more images</button>
+          <a class="view-more-btn" type="button" href="https://discord.gg/7ZVQrqUPFF">View more images</a>
         </div>
 
-        <div class="gallery-shell glass-panel">
+        <div class="gallery-shell glass-panel carousel-panel">
+          <div class="carousel-toolbar">
+            <button type="button" class="carousel-pause-btn" data-carousel="gallery" aria-pressed="false">Pause</button>
+            <div class="carousel-arrows" aria-label="Gallery carousel controls">
+              <button type="button" class="carousel-arrow carousel-prev" data-carousel="gallery" data-direction="-1" aria-label="Previous slide">&#8249;</button>
+              <button type="button" class="carousel-arrow carousel-next" data-carousel="gallery" data-direction="1" aria-label="Next slide">&#8250;</button>
+            </div>
+          </div>
+          <div class="carousel-timer" aria-hidden="true">
+            <span class="carousel-timer-fill" data-carousel="gallery"></span>
+          </div>
           <div class="gallery-stage" id="galleryViewport">
             <div class="gallery-track" id="galleryTrack">
               <article class="gallery-slide active">
-                <div class="gallery-image gallery-image--one"><img src="assets/images/community-event.webp" alt="Community event" /></div>
+                <div class="gallery-image gallery-image--one"><img src="assets/webimages/shypaneer.png" alt="Community event" /></div>
               </article>
               <article class="gallery-slide">
                 <div class="gallery-image gallery-image--two"><img src="assets/images/strategy-session.webp" alt="Strategy session" /></div>
@@ -370,7 +419,7 @@
 
       <section id="team" class="section-shell reveal team-section">
         <div class="team-header">
-          <p class="eyebrow">Board members</p>
+          <p class="eyebrow">Authority</p>
           <h2>Our Team</h2>
           <p>
             A community-led team focused on moderation, planning, technology, and keeping every event and support process consistent.
@@ -385,7 +434,7 @@
             </div>
             <div class="member-meta">
               <h3>CFC_BOT</h3>
-              <span>Founder</span>
+              <span>BOT</span>
               <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
           </article>
@@ -456,7 +505,7 @@
               <span class="discord-status-dot offline" aria-label="Offline"></span>
             </div>
             <div class="member-meta">
-              <h3>imper_monarch25</h3>
+              <h3>imperal_monarch25</h3>
               <span>Admin • Event Manager</span>
               <div class="member-status"><span class="member-status-dot offline"></span><span class="member-status-text">Offline</span></div>
             </div>
@@ -499,14 +548,14 @@
             <div class="step-badge">01</div>
             <h3>
               Go to the
-              <a class="discord-channel-link" href="https://discord.com" target="_blank" rel="noreferrer">
+              <a class="discord-channel-link" href="https://discord.gg/8FSUd2TbU4" target="_blank" rel="noreferrer">
                 <span class="discord-channel-hash">#</span>📩・members-support
               </a>
               channel
             </h3>
             <p>Open the support room and review the pinned guidelines before creating a request.</p>
             <div class="support-visual support-channel">
-              <img src="assets/images/support-channel.webp" alt="Support channel preview" />
+              <img src="assets/webimages/support1.png" alt="Support channel preview" />
             </div>
           </article>
 
@@ -515,7 +564,7 @@
             <h3>Click the Create Ticket button</h3>
             <p>Use the ticket system so your issue stays organized and staff can respond quickly.</p>
             <div class="support-visual support-ticket">
-              <img src="assets/images/support-ticket.webp" alt="Support ticket form preview" />
+              <img src="assets/webimages/support2.png" alt="Support ticket form preview" />
             </div>
           </article>
         </div>
@@ -560,7 +609,7 @@
     </footer>
 
     <script>
-      window.CFC_SITE_DATA_URL = 'https://cfc4.wispbyte.app/api/site-data';
+      window.CFC_SITE_DATA_URL = 'http://127.0.0.1:3001/api/site-data';
     </script>
     <script src="js/main.js?v=2026-08-29-1"></script>
   </body>

@@ -67,7 +67,7 @@ const formatCompactK = (value) => {
   const safeValue = Number(value) || 0;
   if (safeValue < 1000) return `${safeValue}`;
   const compact = safeValue / 1000;
-  return `${compact >= 10 ? compact.toFixed(0) : compact.toFixed(1)}K`;
+   return `${compact >= 10 ? Math.floor(compact).toString() : (Math.floor(compact * 10) / 10).toFixed(1)}K`;
 };
 
 const setMenuState = (isOpen) => {

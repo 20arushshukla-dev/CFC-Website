@@ -30,7 +30,7 @@ const tipClose = document.querySelector('.tip-close');
 const hostName = window.location.hostname;
 const defaultSiteDataUrl = hostName === 'localhost' || hostName === '127.0.0.1'
   ? 'http://127.0.0.1:3001/api/site-data'
-  : 'https://cfc.wispbyte.app/api/site-data';
+  : 'http://78.154.103.46:9037/';
 const siteDataUrl = window.CFC_SITE_DATA_URL || defaultSiteDataUrl;
 const memberStatusMap = {
   online: { label: 'Online', className: 'online' },

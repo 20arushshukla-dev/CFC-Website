@@ -10,8 +10,6 @@ const discordUserId = document.getElementById('discordUserId');
 const scrollTopBtn = document.getElementById('scrollTopBtn');
 scrollTopBtn.classList.add('hidden');
 scrollTopBtn.classList.remove('visible');
-const themeToggle = document.getElementById('themeToggle');
-const themeToggleIcon = themeToggle.querySelector('.theme-toggle__icon');
 const galleryTrack = document.getElementById('galleryTrack');
 const galleryViewport = document.getElementById('galleryViewport');
 const gallerySlides = [...document.querySelectorAll('.gallery-slide')];
@@ -120,40 +118,6 @@ window.addEventListener('load', () => {
 scrollTopBtn.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-
-const sunIcon = `
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <circle cx="12" cy="12" r="3.8"></circle>
-    <g stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-      <path d="M12 1.8v2.2M12 20v2.2M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M1.8 12h2.2M20 12h2.2M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/>
-    </g>
-  </svg>
-`;
-
-const moonIcon = `
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M18.8 15.2A7.2 7.2 0 0 1 8.8 5.2a7.8 7.8 0 1 0 10 10Z" fill="currentColor" stroke="currentColor" stroke-width="0.8" stroke-linejoin="round"></path>
-  </svg>
-`;
-
-const applyTheme = (theme) => {
-  document.body.dataset.theme = theme;
-  themeToggleIcon.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
-  themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-};
-
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-const systemTheme = () => (prefersDark.matches ? 'dark' : 'light');
-
-const syncSystemTheme = () => {
-  if (!localStorage.getItem('cfc-theme')) {
-    applyTheme(systemTheme());
-  }
-};
-
-const savedTheme = localStorage.getItem('cfc-theme');
-const initialTheme = savedTheme || systemTheme();
-applyTheme(initialTheme);
 
 const applyMemberPresenceToCard = (card, status) => {
   const safeStatus = memberStatusMap[status] || memberStatusMap.offline;
@@ -285,11 +249,6 @@ latestUpdatePoster?.addEventListener('error', () => {
 
 loadSiteData();
 window.setInterval(loadSiteData, 30000);
-if (prefersDark.addEventListener) {
-  prefersDark.addEventListener('change', syncSystemTheme);
-} else if (prefersDark.addListener) {
-  prefersDark.addListener(syncSystemTheme);
-}
 
 const hideIntro = () => {
   if (!introOverlay) return;
@@ -421,11 +380,6 @@ if (introOverlay) {
   });
 }
 
-
-themeToggle.addEventListener('click', () => {
-  const nextTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
-  applyTheme(nextTheme);
-});
 
 const revealEls = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver(
@@ -922,18 +876,19 @@ const handleDiscordCallback = () => {
     });
 };
 
-discordLoginBtn.addEventListener('click', () => {
-  const authUrl = getDiscordAuthUrl();
-  if (!authUrl) {
-    alert('Add your real Discord Client ID in js/main.js before testing login.');
-    return;
-  }
-  window.location.href = authUrl;
-});
+if (discordLoginBtn && discordSignoutBtn && discordUserInfo && discordAvatar && discordUsername && discordUserId) {
+  discordLoginBtn.addEventListener('click', () => {
+    const authUrl = getDiscordAuthUrl();
+    if (!authUrl) {
+      alert('Add your real Discord Client ID in js/main.js before testing login.');
+      return;
+    }
+    window.location.href = authUrl;
+  });
 
-discordSignoutBtn.addEventListener('click', clearDiscordUser);
-
-handleDiscordCallback();
+  discordSignoutBtn.addEventListener('click', clearDiscordUser);
+  handleDiscordCallback();
+}
 
 // Welcome Overlay stays until user clicks Explore the community button
 (function() {

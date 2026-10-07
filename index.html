@@ -8,6 +8,7 @@
       content="Citizens For Change — a Discord community for political discussion, study forums, and community events."
     />
     <title>Citizens For Change</title>
+    <link rel="preload" as="image" href="assets/banner.jpg" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,7 +18,7 @@
     <link rel="icon" type="image/svg+xml" href="assets/cfc_server_logo.png" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body data-theme="dark">
+  <body>
 <!-- Floating Clickable Tip -->
 <div id="clickable-tip" class="clickable-tip hidden">
   <div class="tip-content">
@@ -33,7 +34,6 @@
     </div>
 
     <div id="introOverlay" class="intro-overlay" aria-live="polite">
-      <div class="intro-panels" aria-hidden="true"></div>
       <div class="intro-content">
         <img class="intro-logo" src="assets/8a076ab28b0ff9a0e303cef771ac4510.webp" alt="Citizens For Change logo" />
         <div class="intro-copy">
@@ -55,19 +55,16 @@
       </div>
 
       <nav class="top-nav" aria-label="Main navigation">
+        <a href="#protest">Protest 2.0</a>
         <a href="#about">About</a>
+        <a href="#events">Events</a>
         <a href="#featured">Featured</a>
         <a href="#study">Study</a>
         <a href="#gallery">Gallery</a>
-        <a href="#events">Events</a>
         <a href="#support">Support</a>
       </nav>
 
       <div class="header-tools">
-        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
-          <span class="theme-toggle__icon" aria-hidden="true"></span>
-        </button>
-
         <button id="menuToggle" class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
           <span></span>
           <span></span>
@@ -89,12 +86,14 @@
         </div>
 
         <div class="menu-links">
+          <a href="#protest">Protest 2.0</a>
           <a href="#about">About</a>
+          <a href="#events">Events</a>
           <a href="#featured">Featured</a>
           <a href="#study">Study</a>
           <a href="#gallery">Gallery</a>
-          <a href="#events">Events</a>
           <a href="#support">Support</a>
+
         </div>
       </div>
     </nav>
@@ -121,6 +120,31 @@
     </div>
 
     <main>
+      <section id="protest" class="protest-spotlight section-shell reveal" aria-labelledby="protestTitle">
+        <div class="protest-spotlight__heading">
+          <div>
+            <p class="eyebrow">Campaign update</p>
+            <h2 id="protestTitle">Protest 2.0</h2>
+            <span class="protest-spotlight__status"><span aria-hidden="true"></span>Ongoing</span>
+            <p class="protest-spotlight__summary">Review donations received and campaign spending in the live public ledger.</p>
+          </div>
+          <div class="protest-spotlight__actions" aria-label="Campaign links">
+            <a class="primary-cta" href="https://discord.gg/zUh56bfWGx" target="_blank" rel="noreferrer">Join Discord</a>
+            <a class="secondary-cta" href="https://www.instagram.com/citizensforchange.dc/" target="_blank" rel="noreferrer">Instagram</a>
+            <a class="protest-spotlight__ledger-link" href="https://cfc-donations.riftilllusion.workers.dev/#ledger" target="_blank" rel="noreferrer">Open full ledger <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="protest-spotlight__ledger">
+          <iframe
+            id="protestFundsLedgerFrame"
+            src="https://cfc-donations.riftilllusion.workers.dev/#ledger"
+            title="Live public Protest 2.0 funds ledger"
+            loading="eager"
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
+        </div>
+      </section>
+
       <section id="about" class="hero section-shell reveal">
         <div class="hero-copy">
           <div class="live-pill">
@@ -129,7 +153,7 @@
             <strong id="memberCount">4644+</strong>
           </div>
 
-          <h1 class="hero-typewriter" data-text="Citizens Of Change">Citizens Of Change</h1>
+          <h1 class="hero-typewriter" data-text="Citizens Of Change">Citizens For Change</h1>
           <p class="subtext">
             A modern Discord community for political discussion, study groups, collaborative action, and live events.
           </p>
@@ -383,13 +407,13 @@
                 <div class="gallery-image gallery-image--one"><img src="assets/webimages/shypaneer.png" alt="Community event" /></div>
               </article>
               <article class="gallery-slide">
-                <div class="gallery-image gallery-image--two"><img src="assets/images/strategy-session.webp" alt="Strategy session" /></div>
+                <div class="gallery-image gallery-image--two"><img src="assets/webimages/debate.png" alt="Community debate session" /></div>
               </article>
               <article class="gallery-slide">
-                <div class="gallery-image gallery-image--three"><img src="assets/images/gaming-night.webp" alt="Gaming night" /></div>
+                <div class="gallery-image gallery-image--three"><img src="assets/webimages/gaming.png" alt="Community gaming channels" /></div>
               </article>
               <article class="gallery-slide">
-                <div class="gallery-image gallery-image--four"><img src="assets/images/volunteer-launch.webp" alt="Volunteer launch" /></div>
+                <div class="gallery-image gallery-image--four"><img src="assets/webimages/staff.png" alt="Community team meeting" /></div>
               </article>
             </div>
           </div>
@@ -573,7 +597,7 @@
         <div class="footer-brand">
           <img class="brand-logo footer-logo" src="assets/8a076ab28b0ff9a0e303cef771ac4510.webp" alt="Citizens Of Change logo" />
           <div>
-            <p class="footer-kicker">Citizens Of Change</p>
+            <p class="footer-kicker">Citizens For Change</p>
             <p class="footer-sub">Discord • Politics • Gaming</p>
           </div>
         </div>
